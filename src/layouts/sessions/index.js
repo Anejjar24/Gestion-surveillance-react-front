@@ -66,54 +66,84 @@ function Sessions() {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
  
-  useEffect(() => {
-    const fetchSessions = async () => {
-      try {
-        const fetchedSessions = await sessionService.getAllSessions();
-        setSessions(fetchedSessions);
-        setLoading(false);
-      } catch (err) {
-        console.error('Erreur de chargement des sessions:', err);
-        setError(err);
-        setLoading(false);
-      }
-    };
+  // Fetch sessions function
+  const fetchSessions = async () => {
+    try {
+      setLoading(true);
+      const fetchedSessions = await sessionService.getAllSessions();
+      setSessions(fetchedSessions);
+      setLoading(false);
+    } catch (err) {
+      console.error('Erreur de chargement des sessions:', err);
+      setError(err);
+      setLoading(false);
+    }
+  };
 
+  // Initial fetch
+  useEffect(() => {
     fetchSessions();
   }, []);
  
+  // Handle opening the modal
+  const handleAddSessionClick = () => {
+    setShowModal(true);
+  };
+
+  // Handle closing the modal
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  // Handle session added - refreshes the session list
+  const handleSessionAdded = async (newSession) => {
+    // Close the modal
+    setShowModal(false);
+    
+    // Refresh the entire sessions list from the backend
+    await fetchSessions();
+  };
+
   const { columns, rows } = sessionsTableData(sessions);
+
   return (
     <DashboardLayout>
-      <Header 
-       
-      />
+      <Header />
       <SoftBox mt={5} mb={3}>
-        
+        {loading && <SoftTypography>Chargement des sessions...</SoftTypography>}
+        {error && <SoftTypography color="error">Erreur de chargement</SoftTypography>}
       </SoftBox>
       <SoftBox py={3}>
-     
-      <SoftBox mb={3}>
-        <Card>
-        <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-  <SoftBox mb={0.5} display="flex" alignItems="center">
-    <img src={verified} alt="my custom icon" style={{ width: "35px", height: "35px", marginRight: "8px" }} />
-    <SoftTypography variant="h5" fontWeight="medium">
-      Manage Your Sessions
-    </SoftTypography>
-  </SoftBox>
+        <SoftBox mb={3}>
+          <Card>
+            <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
+              <SoftBox mb={0.5} display="flex" alignItems="center">
+                <img 
+                  src={verified} 
+                  alt="my custom icon" 
+                  style={{ width: "35px", height: "35px", marginRight: "8px" }} 
+                />
+                <SoftTypography variant="h5" fontWeight="medium">
+                  Manage Your Sessions
+                </SoftTypography>
+              </SoftBox>
 
-  <SoftBox display="flex" justifyContent="flex-end" alignItems="center">
-    <SoftButton variant="gradient" color="info" sx={{ fontSize: '1rem' }}>
-      <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-      &nbsp;add new Session
-    </SoftButton>
-  </SoftBox>
-</SoftBox>
+              <SoftBox display="flex" justifyContent="flex-end" alignItems="center">
+                <SoftButton 
+                  variant="gradient" 
+                  color="info" 
+                  sx={{ fontSize: '1rem' }}
+                  onClick={handleAddSessionClick}
+                >
+                  <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+                  &nbsp;add new Session
+                </SoftButton>
+              </SoftBox>
+            </SoftBox>
 
-
-          <SoftBox
+            <SoftBox
               sx={{
                 "& .MuiTableRow-root:not(:last-child)": {
                   "& td": {
@@ -125,12 +155,16 @@ function Sessions() {
             >
               <Table columns={columns} rows={rows} />
             </SoftBox>
-        </Card>
+          </Card>
         </SoftBox>
       </SoftBox>
- 
- 
-      
+
+      {/* Session Date Modal */}
+      <SessionDateModal 
+        show={showModal} 
+        onClose={handleCloseModal}
+        onSessionAdded={handleSessionAdded}
+      />
     </DashboardLayout>
   );
 }
