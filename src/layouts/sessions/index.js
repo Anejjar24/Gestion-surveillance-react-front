@@ -16,7 +16,8 @@ Coded by www.creative-tim.com
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-
+import Icon from "@mui/material/Icon";
+import SoftButton from "components/SoftButton";
 // @mui icons
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -65,7 +66,7 @@ function Sessions() {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showModal, setShowModal] = useState(false); // État pour le modal
+ 
   useEffect(() => {
     const fetchSessions = async () => {
       try {
@@ -81,16 +82,12 @@ function Sessions() {
 
     fetchSessions();
   }, []);
- // Optional: Method to add a new session to the list
- const handleSessionAdded = (newSession) => {
-  setSessions(prevSessions => [...prevSessions, newSession]);
-};
+ 
   const { columns, rows } = sessionsTableData(sessions);
   return (
     <DashboardLayout>
       <Header 
-       onOpenModal={() => setShowModal(true)} 
-       onSessionAdded={handleSessionAdded} 
+       
       />
       <SoftBox mt={5} mb={3}>
         
@@ -100,14 +97,22 @@ function Sessions() {
       <SoftBox mb={3}>
         <Card>
         <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-        <SoftBox mb={0.5} display="flex" alignItems="center">
-  <img src={verified} alt="my custom icon" style={{ width: "35px", height: "35px", marginRight: "8px" }} />
-  <SoftTypography variant="h5" fontWeight="medium">
-    Manage Your Sessions
-  </SoftTypography>
+  <SoftBox mb={0.5} display="flex" alignItems="center">
+    <img src={verified} alt="my custom icon" style={{ width: "35px", height: "35px", marginRight: "8px" }} />
+    <SoftTypography variant="h5" fontWeight="medium">
+      Manage Your Sessions
+    </SoftTypography>
+  </SoftBox>
+
+  <SoftBox display="flex" justifyContent="flex-end" alignItems="center">
+    <SoftButton variant="gradient" color="info" sx={{ fontSize: '1rem' }}>
+      <Icon sx={{ fontWeight: "bold" }}>add</Icon>
+      &nbsp;add new Session
+    </SoftButton>
+  </SoftBox>
 </SoftBox>
 
-          </SoftBox>
+
           <SoftBox
               sx={{
                 "& .MuiTableRow-root:not(:last-child)": {
@@ -124,11 +129,7 @@ function Sessions() {
         </SoftBox>
       </SoftBox>
  
- <SessionDateModal
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        onSessionAdded={handleSessionAdded}
-      />
+ 
       
     </DashboardLayout>
   );

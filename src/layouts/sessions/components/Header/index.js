@@ -26,11 +26,11 @@ import SoftButton from "components/SoftButton";
 // Modal Component
 
 
-function Header({ onOpenModal }) {
+function Header() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
   const [sessionCount, setSessionCount] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+ 
 
   useEffect(() => {
     const fetchSessionCount = async () => {
@@ -57,21 +57,8 @@ function Header({ onOpenModal }) {
     return () => window.removeEventListener("resize", handleTabsOrientation);
   }, []);
 
-  // Handler to open the modal
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  // Handler to close the modal
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  // Handler for when a session is added
-  const handleSessionAdded = (newSession) => {
-    // Optionally update session count or trigger a refresh
-    setSessionCount(prevCount => prevCount + 1);
-  };
+  
+  
 
   return (
     <SoftBox position="relative">
@@ -124,19 +111,8 @@ function Header({ onOpenModal }) {
                 </SoftTypography>
               </SoftBox>
             </Grid>
-            <Grid item xs={4} display="flex" justifyContent="flex-end" alignItems="center">
-            <SoftButton variant="gradient" 
-            color="info" sx={{ fontSize: '1rem' }}
-            onClick={handleOpenModal}>
-          <Icon sx={{ fontWeight: "bold"}}>add</Icon>
-          &nbsp;add new Session
-        </SoftButton>
-            </Grid>
-            <SessionDateModal 
-        show={isModalOpen} 
-        onClose={handleCloseModal}
-        onSessionAdded={handleSessionAdded}
-      />
+           
+           
           </SoftBox>
         </Grid>
       </Card>
