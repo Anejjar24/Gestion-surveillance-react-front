@@ -38,6 +38,8 @@ function Bill({ name, company, email, vat, noGutter }) {
       mt={2}
     >
       <SoftBox width="100%" display="flex" flexDirection="column">
+
+        
         <SoftBox
           display="flex"
           justifyContent="space-between"
@@ -65,6 +67,9 @@ function Bill({ name, company, email, vat, noGutter }) {
             </SoftButton>
           </SoftBox>
         </SoftBox>
+
+
+
         <SoftBox mb={1} lineHeight={0}>
           <SoftTypography variant="caption" color="text">
             Company Name:&nbsp;&nbsp;&nbsp;

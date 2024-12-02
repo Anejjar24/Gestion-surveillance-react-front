@@ -1,41 +1,4 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.1
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-/** 
-  All of the routes for the Soft UI Dashboard React are added here,
-  You can add a new route, customize the routes and delete the routes here.
-
-  Once you add a new route on this file it will be visible automatically on
-  the Sidenav.
-
-  For adding a new route you can follow the existing routes in the routes array.
-  1. The `type` key with the `collapse` value is used for a route.
-  2. The `type` key with the `title` value is used for a title inside the Sidenav. 
-  3. The `type` key with the `divider` value is used for a divider between Sidenav items.
-  4. The `name` key is used for the name of the route on the Sidenav.
-  5. The `key` key is used for the key of the route (It will help you with the key prop inside a loop).
-  6. The `icon` key is used for the icon of the route on the Sidenav, you have to add a node.
-  7. The `collapse` key is used for making a collapsible item on the Sidenav that has other routes
-  inside (nested routes), you need to pass the nested routes inside an array as a value for the `collapse` key.
-  8. The `route` key is used to store the route location which is used for the react router.
-  9. The `href` key is used to store the external links location.
-  10. The `title` key is only for the item with the type of `title` and its used for the title text on the Sidenav.
-  10. The `component` key is used to store the component of its route.
-*/
-
-// Soft UI Dashboard React layouts
 import Dashboard from "layouts/dashboard";
 import Tables from "layouts/tables";
 import Sessions from "layouts/sessions";
@@ -56,14 +19,92 @@ import CustomerSupport from "examples/Icons/CustomerSupport";
 import CreditCard from "examples/Icons/CreditCard";
 import Cube from "examples/Icons/Cube";
 
+import Departments from "layouts/departments";
+import Locals from "layouts/locals";
+import Professors from "layouts/professors";
+import Surveillances from "layouts/surveillances";
+import Exams from "layouts/exams";
+import Options from "layouts/options";
+
+
+import { TbBuildingWarehouse } from "react-icons/tb";
+import { BiBuildingHouse } from "react-icons/bi";
+import { GiTeacher } from "react-icons/gi";
+import { FaClipboardList } from "react-icons/fa";
+import { BsFillBuildingsFill } from "react-icons/bs";
+import { RiCalendarScheduleFill } from "react-icons/ri";
+
+
+
 const routes = [
   {
     type: "collapse",
     name: "Dashboard",
     key: "dashboard",
     route: "/dashboard",
-    icon: <Shop size="12px" />,
+    icon: <Shop size="25px" />,
     component: <Dashboard />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Departments",
+    key: "departments",
+    route: "/departments",
+    icon:  <BsFillBuildingsFill size="20px"/>,
+    component: <Departments />,
+    noCollapse: true,
+  },{
+    type: "route", // Nouveau route par défaut
+    name: "Sign Up",
+    key: "sign-up-default",
+    route: "/", // Route racine
+    component: <SignUp />,
+  },
+  
+  {
+    type: "collapse",
+    name: "Locals",
+    key: "locals",
+    route: "/locals",
+    icon:  <TbBuildingWarehouse size="20px"/>,
+    component: <Locals />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Professors",
+    key: "professors",
+    route: "/professors",
+    icon:  <GiTeacher size="20px"/>,
+    component: <Professors />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Exams",
+    key: "exams",
+    route: "/exams",
+    icon:  <FaClipboardList size="20px"/>,
+    component: <Exams />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Surveillances",
+    key: "surveillances",
+    route: "/surveillances",
+    icon:  <RiCalendarScheduleFill size="20px"/>,
+    component: <Surveillances />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Options",
+    key: "options",
+    route: "/options",
+    icon:  <Settings size="20px"/>,
+    component: <Options />,
     noCollapse: true,
   },
   {
@@ -71,25 +112,25 @@ const routes = [
     name: "Tables",
     key: "tables",
     route: "/tables",
-    icon: <Office size="12px" />,
+    icon: <Office size="20px" />,
     component: <Tables />,
     noCollapse: true,
   },
+ 
+
   {
-    type: "collapse",
+    type: "route", // Changez le type
     name: "Sessions",
     key: "sessions",
     route: "/sessions",
-    icon: <Office size="12px" />,
     component: <Sessions />,
-    noCollapse: true,
   },
   {
     type: "collapse",
     name: "Billing",
     key: "billing",
     route: "/billing",
-    icon: <CreditCard size="12px" />,
+    icon: <CreditCard size="20px" />,
     component: <Billing />,
     noCollapse: true,
   },
@@ -98,7 +139,7 @@ const routes = [
     name: "Virtual Reality",
     key: "virtual-reality",
     route: "/virtual-reality",
-    icon: <Cube size="12px" />,
+    icon: <Cube size="20px" />,
     component: <VirtualReality />,
     noCollapse: true,
   },
@@ -107,7 +148,7 @@ const routes = [
     name: "RTL",
     key: "rtl",
     route: "/rtl",
-    icon: <Settings size="12px" />,
+    icon: <Settings size="20px" />,
     component: <RTL />,
     noCollapse: true,
   },
@@ -117,25 +158,17 @@ const routes = [
     name: "Profile",
     key: "profile",
     route: "/profile",
-    icon: <CustomerSupport size="12px" />,
+    icon: <CustomerSupport size="20px" />,
     component: <Profile />,
     noCollapse: true,
   },
-  {
-    type: "collapse",
-    name: "Sign In",
-    key: "sign-in",
-    route: "/authentication/sign-in",
-    icon: <Document size="12px" />,
-    component: <SignIn />,
-    noCollapse: true,
-  },
+  
   {
     type: "collapse",
     name: "Sign Up",
     key: "sign-up",
     route: "/authentication/sign-up",
-    icon: <SpaceShip size="12px" />,
+    icon: <SpaceShip size="20px" />,
     component: <SignUp />,
     noCollapse: true,
   },

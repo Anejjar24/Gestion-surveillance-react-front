@@ -21,26 +21,22 @@ function SessionDateModal({ show, onClose, onSessionAdded }) {
   
     const handleSave = async () => {
       try {
-        // Format dates to match backend expectation (assuming ISO format)
-        const formattedStartDate = startDate ? startDate.toISOString().split('T')[0] : null;
-        const formattedEndDate = endDate ? endDate.toISOString().split('T')[0] : null;
-  
         // Create session object
         const newSession = {
           type: selectedSession,
-          startDate: formattedStartDate,
-          endDate: formattedEndDate
+          startDate: startDate ? `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, '0')}-${String(startDate.getDate()).padStart(2, '0')}` : null,
+          endDate: endDate ? `${endDate.getFullYear()}-${String(endDate.getMonth() + 1).padStart(2, '0')}-${String(endDate.getDate()).padStart(2, '0')}` : null
         };
-  
+    
         // Call service to add session
         const addedSession = await sessionService.addSession(newSession);
-  
+    
         // Notify parent component
         onSessionAdded(addedSession);
-  
+    
         // Close modal
         onClose();
-  
+    
         // Reset form
         setSelectedSession('');
         setStartDate(null);
@@ -50,6 +46,8 @@ function SessionDateModal({ show, onClose, onSessionAdded }) {
         // TODO: Add user-friendly error handling
       }
     };
+
+
   
     return (
  

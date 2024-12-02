@@ -29,7 +29,7 @@ import SoftButton from "components/SoftButton";
 function Header() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
-  const [sessionCount, setSessionCount] = useState(0);
+ 
  
 
   useEffect(() => {
@@ -104,11 +104,9 @@ function Header() {
               />
               <SoftBox height="100%" mt={0.5} lineHeight={1} ml={2}>
                 <SoftTypography variant="h5" fontWeight="medium">
-                  Sessions
+                   Manage Your Sessions
                 </SoftTypography>
-                <SoftTypography variant="h5" color="primary" fontWeight="medium">
-                  ( {sessionCount} ){/* Affichage du nombre de sessions */}
-                </SoftTypography>
+                
               </SoftBox>
             </Grid>
            

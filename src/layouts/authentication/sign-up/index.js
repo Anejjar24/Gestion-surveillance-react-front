@@ -58,7 +58,7 @@ function SignUp() {
       const response = await axios.post("/ProjetWeb/users/login", { email, password });
 
       if (response.status === 200) {
-        navigate("/dashboard");
+        navigate("/Sessions");
         //setMessage("Successful"); // Message de succès
         //console.log("Authenticated user:", response.data);
         // Redirection ou traitement supplémentaire ici
@@ -118,7 +118,7 @@ function SignUp() {
             </SoftBox>
             <SoftBox mt={4} mb={1}>
               <SoftButton variant="gradient" color="info" fullWidth onClick={handleLogin}>
-              <SoftTypography  variant="h5" color="lignt" > Sign up</SoftTypography>
+              <SoftTypography  variant="h5" color="lignt" > Sign In</SoftTypography>
                
               </SoftButton>
             </SoftBox>

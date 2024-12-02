@@ -1,19 +1,3 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
@@ -35,6 +19,11 @@ import ProfilesList from "examples/Lists/ProfilesList";
 import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
 import PlaceholderCard from "examples/Cards/PlaceholderCard";
 import SessionDateModal from "modals/sessions/SessionDateModal";
+
+import SessionDeleteModal from "modals/sessions/SessionDeleteModal";
+
+
+import SessionEditModal from "modals/sessions/SessionEditModal";
 // Overview page components
 import Header from "layouts/sessions/components/Header";
 import PlatformSettings from "layouts/sessions/components/PlatformSettings";
@@ -58,7 +47,7 @@ import Table from "examples/Tables/Table";
 import { sessionService } from 'services/sessions/sessionService';
 import sessionsTableData from 'layouts/sessions/data/sessionsTableData';
 
-import verified from 'assets/images/verified.png';
+import hourglass from 'assets/images/hourglass.png';
 
 //import SoftButton from "components/SoftButton";
 
@@ -66,8 +55,14 @@ function Sessions() {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedSession, setSelectedSession] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
- 
+  const [sessionCount, setSessionCount] = useState(0);
   // Fetch sessions function
   const fetchSessions = async () => {
     try {
@@ -81,10 +76,19 @@ function Sessions() {
       setLoading(false);
     }
   };
+  const fetchSessionCount = async () => {
+    try {
+      const count = await sessionService.getCountSessions();
+      setSessionCount(count);
+    } catch (error) {
+      console.error("Erreur lors de la récupération du nombre de sessions :", error);
+    }
+  };
 
   // Initial fetch
   useEffect(() => {
     fetchSessions();
+    fetchSessionCount();
   }, []);
  
   // Handle opening the modal
@@ -104,9 +108,57 @@ function Sessions() {
     
     // Refresh the entire sessions list from the backend
     await fetchSessions();
+    await fetchSessionCount();
   };
 
-  const { columns, rows } = sessionsTableData(sessions);
+
+
+  
+  // Nouvelle fonction pour supprimer une session
+  const handleDeleteSession = async (id) => {
+    try {
+      await sessionService.deleteSession(id);
+      // Rafraîchir la liste des sessions et le compte
+      await fetchSessions();
+      await fetchSessionCount();
+    } catch (error) {
+      console.error('Erreur lors de la suppression de la session:', error);
+    }
+  };
+
+  // Nouvelle fonction pour ouvrir le modal de suppression
+  const handleDeleteSessionClick = (session) => {
+    setSelectedSession(session);
+    setShowDeleteModal(true);
+  };
+// Nouvelle fonction pour ouvrir le modal d'édition
+const handleEditSessionClick = (session) => {
+  setSelectedSession(session);
+  setShowEditModal(true);
+};
+  // Fonction de suppression confirmée
+  const handleConfirmDelete = async (id) => {
+    try {
+      await sessionService.deleteSession(id);
+      // Rafraîchir la liste des sessions et le compte
+      await fetchSessions();
+      await fetchSessionCount();
+    } catch (error) {
+      console.error('Erreur lors de la suppression de la session:', error);
+    }
+  };
+
+  // Mise à jour de la fonction de création de tableau
+  const { columns, rows } = sessionsTableData(
+    sessions, 
+    handleDeleteSessionClick, 
+    handleEditSessionClick
+  );
+
+
+
+
+  //const { columns, rows } = sessionsTableData(sessions);
 
   return (
     <DashboardLayout>
@@ -121,12 +173,17 @@ function Sessions() {
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftBox mb={0.5} display="flex" alignItems="center">
                 <img 
-                  src={verified} 
+                  src={hourglass} 
                   alt="my custom icon" 
-                  style={{ width: "35px", height: "35px", marginRight: "8px" }} 
+                  style={{ width: "45px", height: "45px", marginRight: "12px" }} 
                 />
-                <SoftTypography variant="h5" fontWeight="medium">
-                  Manage Your Sessions
+                <SoftTypography variant="h3" fontWeight="medium">
+                Sessions
+                </SoftTypography>
+                
+                <SoftTypography variant="h4" color="primary" fontWeight="medium">
+                &nbsp;  &nbsp;  &nbsp;
+                ( {sessionCount} ){/* Affichage du nombre de sessions */}
                 </SoftTypography>
               </SoftBox>
 
@@ -164,6 +221,24 @@ function Sessions() {
         show={showModal} 
         onClose={handleCloseModal}
         onSessionAdded={handleSessionAdded}
+      />
+
+<SessionEditModal 
+        show={showEditModal} 
+        onClose={() => setShowEditModal(false)}
+        onSessionUpdated={() => {
+          fetchSessions();
+          fetchSessionCount();
+          setShowEditModal(false);
+        }}
+        initialSession={selectedSession}
+      />
+
+<SessionDeleteModal 
+        show={showDeleteModal} 
+        onClose={() => setShowDeleteModal(false)}
+        onConfirmDelete={handleConfirmDelete}
+        sessionToDelete={selectedSession}
       />
     </DashboardLayout>
   );
