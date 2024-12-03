@@ -1,66 +1,28 @@
-import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
 import SoftButton from "components/SoftButton";
-// @mui icons
-import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import InstagramIcon from "@mui/icons-material/Instagram";
-
-// Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-
 // Soft UI Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import Footer from "examples/Footer";
-import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
-import ProfilesList from "examples/Lists/ProfilesList";
-import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
-import PlaceholderCard from "examples/Cards/PlaceholderCard";
 import SessionDateModal from "modals/sessions/SessionDateModal";
-
 import SessionDeleteModal from "modals/sessions/SessionDeleteModal";
-
-
 import SessionEditModal from "modals/sessions/SessionEditModal";
 // Overview page components
 import Header from "layouts/sessions/components/Header";
-import PlatformSettings from "layouts/sessions/components/PlatformSettings";
-
-// Data
-import profilesListData from "layouts/profile/data/profilesListData";
-
-// Images
-import homeDecor1 from "assets/images/home-decor-1.jpg";
-import homeDecor2 from "assets/images/home-decor-2.jpg";
-import homeDecor3 from "assets/images/home-decor-3.jpg";
-import team1 from "assets/images/team-1.jpg";
-import team2 from "assets/images/team-2.jpg";
-import team3 from "assets/images/team-3.jpg";
-import team4 from "assets/images/team-4.jpg";
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import Table from "examples/Tables/Table";
-
 /// Service and Data
 import { sessionService } from 'services/sessions/sessionService';
 import sessionsTableData from 'layouts/sessions/data/sessionsTableData';
-
 import hourglass from 'assets/images/hourglass.png';
-
-//import SoftButton from "components/SoftButton";
-
 function Sessions() {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedSession, setSelectedSession] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
   const [showModal, setShowModal] = useState(false);
   const [sessionCount, setSessionCount] = useState(0);
   // Fetch sessions function
@@ -111,9 +73,6 @@ function Sessions() {
     await fetchSessionCount();
   };
 
-
-
-  
   // Nouvelle fonction pour supprimer une session
   const handleDeleteSession = async (id) => {
     try {
