@@ -26,7 +26,7 @@ import departmentsTableData from 'layouts/departments/data/departmentsTableData'
 
 // Images
 import department1 from 'assets/images/department1.png';
-
+import { useNavigate } from 'react-router-dom';
 function Departments() {
   // State for departments
   const [departments, setDepartments] = useState([]);
@@ -39,6 +39,10 @@ function Departments() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [departmentCount, setDepartmentCount] = useState(0);
+
+
+  const navigate = useNavigate();
+
 
   // Fetch departments function
   const fetchDepartments = async () => {
@@ -108,11 +112,28 @@ function Departments() {
     setShowEditModal(true);
   };
 
-  // Generate table data
+
+  // Add navigation handler
+  const handleNavigateToProfessors = (department) => {
+    // Navigate to the Professors page with the department ID
+    navigate(`/professors/${department.id}`, { 
+      state: { 
+        departmentId: department.id, 
+        departmentName: department.nom 
+      } 
+    });
+  };
+
+
+
+
+
+  // Update the table data generation to include navigation handler
   const { columns, rows } = departmentsTableData(
     departments, 
     handleDeleteDepartmentClick, 
-    handleEditDepartmentClick
+    handleEditDepartmentClick,
+    handleNavigateToProfessors // Add this new handler
   );
 
   return (

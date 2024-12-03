@@ -1,205 +1,205 @@
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import Icon from "@mui/material/Icon";
-import SoftButton from "components/SoftButton";
-// @mui icons
-import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import InstagramIcon from "@mui/icons-material/Instagram";
-
-// Soft UI Dashboard React components
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import Header from "layouts/professors/components/Header";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
+import SoftButton from "components/SoftButton";
 
-// Soft UI Dashboard React examples
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import Footer from "examples/Footer";
-import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
-import ProfilesList from "examples/Lists/ProfilesList";
-import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
-import PlaceholderCard from "examples/Cards/PlaceholderCard";
-import SessionDateModal from "modals/sessions/SessionDateModal";
-
-import SessionDeleteModal from "modals/sessions/SessionDeleteModal";
-
-
-import SessionEditModal from "modals/sessions/SessionEditModal";
-// Overview page components
-import Header from "layouts/professors/components/Header";
-import PlatformSettings from "layouts/sessions/components/PlatformSettings";
-
-// Data
-import profilesListData from "layouts/profile/data/profilesListData";
-
-// Images
-import homeDecor1 from "assets/images/home-decor-1.jpg";
-import homeDecor2 from "assets/images/home-decor-2.jpg";
-import homeDecor3 from "assets/images/home-decor-3.jpg";
-import team1 from "assets/images/team-1.jpg";
-import team2 from "assets/images/team-2.jpg";
-import team3 from "assets/images/team-3.jpg";
-import team4 from "assets/images/team-4.jpg";
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import Card from "@mui/material/Card";
+import Icon from "@mui/material/Icon";
 import Table from "examples/Tables/Table";
+ // Adjust import path
+ import { EnseignantService } from 'services/professors/enseignantService';
 
-/// Service and Data
-import { sessionService } from 'services/sessions/sessionService';
-import sessionsTableData from 'layouts/sessions/data/sessionsTableData';
+import hourglass from "assets/images/hourglass.png"; // Adjust import path
 
-import hourglass from 'assets/images/teacher1.png';
+import EnseignantAddModal from "modals/enseignants/EnseignantAddModal";
+import EnseignantDeleteModal from "modals/enseignants/EnseignantDeleteModal";
+import EnseignantEditModal from "modals/enseignants/EnseignantEditModal";
+import professorsTableData from 'layouts/professors/data/professorsTableData';
 
-//import SoftButton from "components/SoftButton";
 
 function Professors() {
-  const [sessions, setSessions] = useState([]);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // State for professors
+  const [professors, setProfessors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
+  // Modal control states
+  const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedSession, setSelectedSession] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedProfessor, setSelectedProfessor] = useState(null);
+  const [professorsCount, setProfessorsCount] = useState(0);
 
-  const [showModal, setShowModal] = useState(false);
-  const [sessionCount, setSessionCount] = useState(0);
-  // Fetch sessions function
-  const fetchSessions = async () => {
+  // Department context
+  const [departmentId, setDepartmentId] = useState(null);
+  const [departmentName, setDepartmentName] = useState(null);
+
+  // Fetch professors function
+  const fetchProfessors = async () => {
     try {
       setLoading(true);
-      const fetchedSessions = await sessionService.getAllSessions();
-      setSessions(fetchedSessions);
+      let fetchedProfessors;
+      
+      if (departmentId) {
+        // Fetch professors for specific department
+        fetchedProfessors = await EnseignantService.findByDepartmentId(departmentId);
+      } else {
+        // Fetch all professors
+        fetchedProfessors = await EnseignantService.getAllEnseignants();
+      }
+      
+      setProfessors(fetchedProfessors);
       setLoading(false);
     } catch (err) {
-      console.error('Erreur de chargement des sessions:', err);
+      console.error('Error loading professors:', err);
       setError(err);
       setLoading(false);
     }
   };
-  const fetchSessionCount = async () => {
+
+  // Fetch professors count
+  const fetchProfessorsCount = async () => {
     try {
-      const count = await sessionService.getCountSessions();
-      setSessionCount(count);
+      let count;
+      if (departmentId) {
+        // Get count of professors in specific department
+        count = await EnseignantService.getCountEnseignantsByDepartment(departmentId);
+      } else {
+        // Get total professors count
+        count = await EnseignantService.getCountEnseignants();
+      }
+      setProfessorsCount(count);
     } catch (error) {
-      console.error("Erreur lors de la récupération du nombre de sessions :", error);
+      console.error("Error retrieving professors count:", error);
     }
   };
 
-  // Initial fetch
+  // Initial fetch and department context setup
   useEffect(() => {
-    fetchSessions();
-    fetchSessionCount();
-  }, []);
- 
-  // Handle opening the modal
-  const handleAddSessionClick = () => {
-    setShowModal(true);
+    // Check if a department ID was passed during navigation
+    if (location.state && location.state.departmentId) {
+      setDepartmentId(location.state.departmentId);
+      setDepartmentName(location.state.departmentName);
+    }
+
+    fetchProfessors();
+    fetchProfessorsCount();
+  }, [departmentId]);
+
+  // Handle adding a new professor
+  const handleProfessorAdded = async (newProfessor) => {
+    setShowAddModal(false);
+    await fetchProfessors();
+    await fetchProfessorsCount();
   };
 
-  // Handle closing the modal
-  const handleCloseModal = () => {
-    setShowModal(false);
+  // Handle updating a professor
+  const handleProfessorUpdated = async () => {
+    setShowEditModal(false);
+    await fetchProfessors();
+    await fetchProfessorsCount();
   };
 
-  // Handle session added - refreshes the session list
-  const handleSessionAdded = async (newSession) => {
-    // Close the modal
-    setShowModal(false);
-    
-    // Refresh the entire sessions list from the backend
-    await fetchSessions();
-    await fetchSessionCount();
-  };
-
-
-
-  
-  // Nouvelle fonction pour supprimer une session
-  const handleDeleteSession = async (id) => {
+  // Handle deleting a professor
+  const handleDeleteProfessor = async (id) => {
     try {
-      await sessionService.deleteSession(id);
-      // Rafraîchir la liste des sessions et le compte
-      await fetchSessions();
-      await fetchSessionCount();
+      await EnseignantService.deleteEnseignant(id);
+      setShowDeleteModal(false);
+      await fetchProfessors();
+      await fetchProfessorsCount();
     } catch (error) {
-      console.error('Erreur lors de la suppression de la session:', error);
+      console.error('Error deleting professor:', error);
     }
   };
 
-  // Nouvelle fonction pour ouvrir le modal de suppression
-  const handleDeleteSessionClick = (session) => {
-    setSelectedSession(session);
+  // Handle delete professor click
+  const handleDeleteProfessorClick = (professor) => {
+    setSelectedProfessor(professor);
     setShowDeleteModal(true);
   };
-// Nouvelle fonction pour ouvrir le modal d'édition
-const handleEditSessionClick = (session) => {
-  setSelectedSession(session);
-  setShowEditModal(true);
-};
-  // Fonction de suppression confirmée
-  const handleConfirmDelete = async (id) => {
-    try {
-      await sessionService.deleteSession(id);
-      // Rafraîchir la liste des sessions et le compte
-      await fetchSessions();
-      await fetchSessionCount();
-    } catch (error) {
-      console.error('Erreur lors de la suppression de la session:', error);
-    }
+
+  // Handle edit professor click
+  const handleEditProfessorClick = (professor) => {
+    setSelectedProfessor(professor);
+    setShowEditModal(true);
   };
 
-  // Mise à jour de la fonction de création de tableau
-  const { columns, rows } = sessionsTableData(
-    sessions, 
-    handleDeleteSessionClick, 
-    handleEditSessionClick
+  // Navigate back to departments if needed
+  const handleBackToDepartments = () => {
+    navigate('/departments');
+  };
+
+  // Generate table data
+  const { columns, rows } = professorsTableData(
+    professors, 
+    handleDeleteProfessorClick, 
+    handleEditProfessorClick
   );
-
-
-
-
-  //const { columns, rows } = sessionsTableData(sessions);
 
   return (
     <DashboardLayout>
       <Header />
+      
+      {/* Loading and Error Handling */}
       <SoftBox mt={5} mb={3}>
-        {loading && <SoftTypography>Chargement des sessions...</SoftTypography>}
-        {error && <SoftTypography color="error">Erreur de chargement</SoftTypography>}
+        {loading && <SoftTypography>Loading professors...</SoftTypography>}
+        {error && <SoftTypography color="error">Error loading professors</SoftTypography>}
       </SoftBox>
+      
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
+            {/* Header Section */}
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftBox mb={0.5} display="flex" alignItems="center">
                 <img 
                   src={hourglass} 
-                  alt="my custom icon" 
+                  alt="professors icon" 
                   style={{ width: "45px", height: "45px", marginRight: "12px" }} 
                 />
                 <SoftTypography variant="h3" fontWeight="medium">
-                Professors
+                  {departmentName 
+                    ? `Professors in ${departmentName}` 
+                    : 'All Professors'}
                 </SoftTypography>
                 
                 <SoftTypography variant="h4" color="primary" fontWeight="medium">
-                &nbsp;  &nbsp;  &nbsp;
-                ( {sessionCount} ){/* Affichage du nombre de sessions */}
+                  &nbsp;  &nbsp;  &nbsp;
+                  ( {professorsCount} )
                 </SoftTypography>
               </SoftBox>
 
+              {/* Action Buttons */}
               <SoftBox display="flex" justifyContent="flex-end" alignItems="center">
+                {departmentId && (
+                  <SoftButton 
+                    variant="gradient" 
+                    color="secondary" 
+                    sx={{ fontSize: '1rem', marginRight: '10px' }}
+                    onClick={handleBackToDepartments}
+                  >
+                    Back to Departments
+                  </SoftButton>
+                )}
                 <SoftButton 
                   variant="gradient" 
                   color="info" 
                   sx={{ fontSize: '1rem' }}
-                  onClick={handleAddSessionClick}
+                  onClick={() => setShowAddModal(true)}
                 >
                   <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                  &nbsp;add new Professor
+                  &nbsp;Add New Professor
                 </SoftButton>
               </SoftBox>
             </SoftBox>
 
+            {/* Professors Table */}
             <SoftBox
               sx={{
                 "& .MuiTableRow-root:not(:last-child)": {
@@ -216,30 +216,28 @@ const handleEditSessionClick = (session) => {
         </SoftBox>
       </SoftBox>
 
-      {/* Session Date Modal */}
-      <SessionDateModal 
-        show={showModal} 
-        onClose={handleCloseModal}
-        onSessionAdded={handleSessionAdded}
-      />
+      {/* Modals */}
+      {/* Modals */}
+<EnseignantAddModal 
+  show={showAddModal} 
+  onClose={() => setShowAddModal(false)}
+  onEnseignantAdded={handleProfessorAdded}
+  departmentId={departmentId}
+/>
 
-<SessionEditModal 
-        show={showEditModal} 
-        onClose={() => setShowEditModal(false)}
-        onSessionUpdated={() => {
-          fetchSessions();
-          fetchSessionCount();
-          setShowEditModal(false);
-        }}
-        initialSession={selectedSession}
-      />
+<EnseignantEditModal 
+  show={showEditModal} 
+  onClose={() => setShowEditModal(false)}
+  onEnseignantUpdated={handleProfessorUpdated}
+  initialEnseignant={selectedProfessor}
+/>
 
-<SessionDeleteModal 
-        show={showDeleteModal} 
-        onClose={() => setShowDeleteModal(false)}
-        onConfirmDelete={handleConfirmDelete}
-        sessionToDelete={selectedSession}
-      />
+<EnseignantDeleteModal 
+  show={showDeleteModal} 
+  onClose={() => setShowDeleteModal(false)}
+  onConfirmDelete={handleDeleteProfessor}
+  enseignantToDelete={selectedProfessor}
+/>
     </DashboardLayout>
   );
 }

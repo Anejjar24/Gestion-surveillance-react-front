@@ -71,12 +71,22 @@ const routes = [
     component: <Locals />,
     noCollapse: true,
   },
+  // {
+  //   type: "collapse",
+  //   name: "Professors",
+  //   key: "professors",
+  //   route: "/professors",
+  //   icon:  <GiTeacher size="20px"/>,
+  //   component: <Professors />,
+  //   noCollapse: true,
+  // },
+
   {
-    type: "collapse",
+    type: "route",
     name: "Professors",
     key: "professors",
-    route: "/professors",
-    icon:  <GiTeacher size="20px"/>,
+    route: "/professors/:departmentId", // Add parameter for department
+    
     component: <Professors />,
     noCollapse: true,
   },

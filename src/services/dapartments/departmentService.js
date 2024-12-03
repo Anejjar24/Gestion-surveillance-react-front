@@ -48,16 +48,6 @@ export const DepartmentService = {
     }
   },
 
-  // // Update an existing department
-  // updateDepartment: async (department) => {
-  //   try {
-  //     const response = await axios.put(API_URL, department);
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error('Error updating department:', error);
-  //     throw error;
-  //   }
-  // },
   updateDepartment: async (department) => {
     try {
       const response = await axios.put(`${API_URL}/${department.id}`, department);
