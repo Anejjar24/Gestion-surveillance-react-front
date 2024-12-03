@@ -3,20 +3,24 @@ import React from 'react';
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import Icon from "@mui/material/Icon";
+import Checkbox from "@mui/material/Checkbox";
 
 const professorsTableData = (professors, onDeleteProfessorClick, onEditProfessorClick) => {
   return {
     columns: [
-      { name: "name", align: "left" },
-      { name: "email", align: "left" },
-      { name: "department", align: "center" },
+      { name: "name", align: "center" },
+      { name: "dispense", align: "center" },
       { name: "action", align: "center" },
     ],
     rows: professors.map(professor => ({
       id: professor.id,
       name: professor.nom + ' ' + professor.prenom,
-      email: professor.email,
-      department: professor.departement ? professor.departement.nom : 'N/A',
+      dispense: (
+        <Checkbox
+          checked={professor.dispense || false}
+          disabled
+        />
+      ),
       action: (
         <SoftBox display="flex" justifyContent="center">
           <SoftButton

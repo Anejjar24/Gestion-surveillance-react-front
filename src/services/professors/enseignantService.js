@@ -79,10 +79,13 @@ export const EnseignantService = {
       console.error(`Erreur de récupération de l'enseignant ${id}:`, error);
       throw error;
     }
-  },getCountEnseignantsByDepartment: async (departmentId) => {
+  },
+  getCountEnseignantsByDepartment: async (departmentId) => {
     try {
-      const response = await axios.get(`${API_URL}department/${departmentId}/count`);
-      return response.data;
+       console.log(`Fetching count for URL: ${API_URL}department/${departmentId}/count`);
+        const response = await axios.get(`${API_URL}department/${departmentId}/count`);
+        console.log('Response data:', response.data);
+        return response.data;
     } catch (error) {
       console.error(`Erreur de récupération du nombre d'enseignants du département ${departmentId}:`, error);
       throw error;
