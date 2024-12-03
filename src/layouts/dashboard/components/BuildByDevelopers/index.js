@@ -1,19 +1,4 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.1
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
@@ -25,6 +10,8 @@ import SoftTypography from "components/SoftTypography";
 // Images
 import wavesWhite from "assets/images/shapes/waves-white.svg";
 import rocketWhite from "assets/images/illustrations/rocket-white.png";
+import rocketWhite1 from "assets/images/illustrations/teamw.png";
+
 
 function BuildByDevelopers() {
   return (
@@ -35,16 +22,16 @@ function BuildByDevelopers() {
             <SoftBox display="flex" flexDirection="column" height="100%">
               <SoftBox pt={1} mb={0.5}>
                 <SoftTypography variant="body2" color="text" fontWeight="medium">
-                  Build by developers
+                At ENSAJ
                 </SoftTypography>
               </SoftBox>
               <SoftTypography variant="h5" fontWeight="bold" gutterBottom>
-                Soft UI Dashboard
+              surveillance management 
               </SoftTypography>
               <SoftBox mb={6}>
                 <SoftTypography variant="body2" color="text">
-                  From colors, cards, typography to complex elements, you will find the full
-                  documentation.
+                At ENSAJ, surveillance management projects focus on organizing and assigning exam monitoring tasks. Departments and teachers are registered, and examination rooms (amphitheaters and classrooms) are prepared. Surveillance assignments are distributed equitably among teachers, considering room size and fair rotations. 
+                Reserve teachers are allocated to ensure sufficient monitoring coverage​
                 </SoftTypography>
               </SoftBox>
               <SoftTypography
@@ -96,7 +83,7 @@ function BuildByDevelopers() {
                 width="100%"
                 height="100%"
               />
-              <SoftBox component="img" src={rocketWhite} alt="rocket" width="100%" pt={3} />
+              <SoftBox component="img" src={rocketWhite1} alt="rocket" width="100%" pt={3} />
             </SoftBox>
           </Grid>
         </Grid>

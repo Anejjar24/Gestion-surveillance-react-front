@@ -3,7 +3,7 @@ import Icon from "@mui/material/Icon";
 // @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-
+import { useNavigate } from "react-router-dom"; 
 import PropTypes from "prop-types";
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
@@ -23,15 +23,14 @@ import { sessionService } from "services/sessions/sessionService";
 
 import SoftButton from "components/SoftButton";
 
+// Icon
+import { FiLogOut } from "react-icons/fi"; // Import the logout icon
+
 // Modal Component
-
-
-function Header() {
+function Header({ onOpenModal }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
- 
- 
-
+  const navigate = useNavigate(); 
   useEffect(() => {
     const fetchSessionCount = async () => {
       try {
@@ -57,8 +56,12 @@ function Header() {
     return () => window.removeEventListener("resize", handleTabsOrientation);
   }, []);
 
-  
-  
+  // Handle logout
+  const handleLogout = () => {
+    // You can implement the logic for logging out here (e.g., clear session, tokens)
+    // After logging out, navigate to the SignUp page
+    navigate("/"); // Using useNavigate to redirect to Sign Up page
+  };
 
   return (
     <SoftBox position="relative">
@@ -93,7 +96,7 @@ function Header() {
         }}
       >
         <Grid container spacing={3} alignItems="center">
-          <SoftBox pt={2} px={2} display="flex" justifyContent="space-between" alignItems="center" width="100%" pl={4}> {/* Added pl={4} for padding-left */}
+          <SoftBox pt={2} px={2} display="flex" justifyContent="space-between" alignItems="center" width="100%" pl={4}>
             <Grid item xs={8} display="flex" alignItems="center">
               <SoftAvatar
                 src={session}
@@ -104,20 +107,32 @@ function Header() {
               />
               <SoftBox height="100%" mt={0.5} lineHeight={1} ml={2}>
                 <SoftTypography variant="h5" fontWeight="medium">
-                   Manage Your Sessions
+                  Manage Your Sessions
                 </SoftTypography>
-                
               </SoftBox>
             </Grid>
-           
-           
+
+            {/* Add logout button with icon */}
+            <SoftButton
+              variant="contained"
+              color="error"
+              sx={{ borderRadius: "12px", padding: "8px 16px", display: "flex", alignItems: "center" }}
+              onClick={handleLogout}
+            >
+              <FiLogOut size={20} style={{ marginRight: "8px" }} /> {/* Icon and spacing */}
+              <SoftTypography variant="body2" color="white">
+                Logout
+              </SoftTypography>
+            </SoftButton>
           </SoftBox>
         </Grid>
       </Card>
     </SoftBox>
   );
 }
+
 Header.propTypes = {
-  onOpenModal: PropTypes.func.isRequired, // Validation de la prop
+  onOpenModal: PropTypes.func.isRequired,
 };
+
 export default Header;

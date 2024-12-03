@@ -183,7 +183,7 @@ const handleEditSessionClick = (session) => {
                 
                 <SoftTypography variant="h4" color="primary" fontWeight="medium">
                 &nbsp;  &nbsp;  &nbsp;
-                ( {sessionCount} ){/* Affichage du nombre de sessions */}
+                (  ){/* Affichage du nombre de sessions */}
                 </SoftTypography>
               </SoftBox>
 
@@ -210,7 +210,7 @@ const handleEditSessionClick = (session) => {
                 },
               }}
             >
-              <Table columns={columns} rows={rows} />
+              
             </SoftBox>
           </Card>
         </SoftBox>

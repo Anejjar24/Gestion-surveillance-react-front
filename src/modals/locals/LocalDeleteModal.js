@@ -28,7 +28,7 @@ function LocalDeleteModal({
           <div className="mt-3">
             <strong>Nom:</strong> {localToDelete.nom}<br />
             <strong>Type:</strong> {localToDelete.type}<br />
-            <strong>Taille:</strong> {localToDelete.taille} m²
+            <strong>Taille:</strong> {localToDelete.taille} 
           </div>
         )}
       </Modal.Body>

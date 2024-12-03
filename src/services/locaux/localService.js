@@ -3,7 +3,7 @@ import axios from 'axios';
 const API_URL = '/ProjetWeb/locals/';
 const API_URL_Count = '/ProjetWeb/locals/count';
 
-export const localService = {
+export  const localService = {
   // Récupérer tous les locaux
   getAllLocals: async () => {
     try {
@@ -14,6 +14,7 @@ export const localService = {
       throw error;
     }
   },
+  
   
   // Récupérer le nombre total de locaux
   getCountLocals: async () => {

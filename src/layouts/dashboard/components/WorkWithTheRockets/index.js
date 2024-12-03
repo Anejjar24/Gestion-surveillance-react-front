@@ -22,7 +22,7 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 
 // Images
-import ivancik from "assets/images/ivancik.jpg";
+import ivancik from "assets/images/ensa_eljadida_cover.jpg";
 
 function WorkWithTheRockets() {
   return (
@@ -38,22 +38,20 @@ function WorkWithTheRockets() {
           sx={{
             backgroundImage: ({ functions: { linearGradient, rgba }, palette: { gradients } }) =>
               `${linearGradient(
-                rgba(gradients.dark.main, 0.8),
-                rgba(gradients.dark.state, 0.8)
+                rgba(gradients.dark.main, 0.5),
+                rgba(gradients.dark.state, 0.3)
               )}, url(${ivancik})`,
             backgroundSize: "cover",
           }}
         >
           <SoftBox mb={3} pt={1}>
             <SoftTypography variant="h5" color="white" fontWeight="bold">
-              Work with the rockets
+              ENSAJ Presentation
             </SoftTypography>
           </SoftBox>
           <SoftBox mb={2}>
             <SoftTypography variant="body2" color="white">
-              Wealth creation is an evolutionarily recent positive-sum game. It is all about who
-              take the opportunity first.
-            </SoftTypography>
+            The National School of Applied Sciences of El Jadida (ENSAJ) is a public institution dedicated to training state engineers, providing continuous education, and advancing scientific research. Its establishment at Chouaïb Doukkali University aligns with a strategy to diversify the educational offerings within the university. This approach considers the evolving demands of both national and international labor markets.            </SoftTypography>
           </SoftBox>
           <SoftTypography
             component="a"

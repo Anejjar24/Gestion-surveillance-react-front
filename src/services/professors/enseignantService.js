@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const API_URL = '/ProjetWeb/enseignants/';
 const API_URL_COUNT = '/ProjetWeb/enseignants/count';
+const API_URL_COUNT_ALL = '/ProjetWeb/enseignants/count';
 
 export const EnseignantService = {
   // Obtenir tous les enseignants
@@ -14,7 +15,15 @@ export const EnseignantService = {
       throw error;
     }
   },
-
+  getAllCountEnseignants: async () => {
+    try {
+      const response = await axios.get(API_URL_COUNT_ALL);
+      return response.data; // Retourne la donnée brute (un entier)
+    } catch (error) {
+      console.error("Erreur lors de la récupération du nombre de sessions:", error);
+      throw error;
+    }
+  },
   // Obtenir le nombre total d'enseignants
   getCountEnseignants: async () => {
     try {

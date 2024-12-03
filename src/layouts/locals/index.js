@@ -17,7 +17,7 @@ import axios from 'axios';
 import Table from "examples/Tables/Table";
 
 /// Service and Data
-import { localService } from 'services/lacaux/localService';
+import { localService } from 'services/locaux/localService';
 
 // Modals
 import LocalAddModal from "modals/locals/LocalAddModal";
