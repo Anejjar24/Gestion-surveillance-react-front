@@ -1,55 +1,50 @@
-import React from 'react';
-import SoftTypography from 'components/SoftTypography';
-import SoftBox from 'components/SoftBox';
-import SoftButton from 'components/SoftButton';
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
+import SoftBadge from "components/SoftBadge";
+import SoftButton from "components/SoftButton";
+import Icon from "@mui/material/Icon";
 
-export default function localsTableData(
-  locals, 
-  handleDeleteLocalClick, 
-  handleEditLocalClick
-) {
-  const columns = [
-    { Header: 'Nom', accessor: 'nom', width: '25%' },
-    { Header: 'Type', accessor: 'type', width: '25%' },
-    { Header: 'Taille', accessor: 'taille', width: '20%' },
-    { Header: 'Actions', accessor: 'actions', width: '30%', align: 'center' }
-  ];
+const localsTableData = (locals, onDeleteLocalClick, onEditLocal) => {
+  return {
+    columns: [
+      { name: "nom", align: "center" },
+      { name: "type", align: "center" },
+      { name: "taille", align: "center" },
+      { name: "action", align: "center" },
+    ],
+    rows: locals.map(local => ({
+      id: local.id,
+      nom: local.nom,
+      type: (
+        <SoftBadge 
+          variant="gradient" 
+          badgeContent={local.type} 
+          color="success" 
+          size="xs" 
+          container 
+        />
+      ),
+      taille: `${local.taille}`,
+      action: (
+        <SoftBox display="flex" alignItems="center" justifyContent="center">
+          <SoftButton 
+            variant="text" 
+            color="info" 
+            onClick={() => onEditLocal(local)}
+          >
+            <Icon>edit</Icon>
+          </SoftButton>
+          <SoftButton 
+            variant="text" 
+            color="error" 
+            onClick={() => onDeleteLocalClick(local)}
+          >
+            <Icon>delete</Icon>
+          </SoftButton>
+        </SoftBox>
+      ),
+    }))
+  };
+};
 
-  const rows = locals.map((local) => ({
-    nom: (
-      <SoftTypography variant="caption" fontWeight="medium">
-        {local.nom}
-      </SoftTypography>
-    ),
-    type: (
-      <SoftTypography variant="caption">
-        {local.type}
-      </SoftTypography>
-    ),
-    taille: (
-      <SoftTypography variant="caption">
-        {local.taille}
-      </SoftTypography>
-    ),
-    actions: (
-      <SoftBox display="flex" justifyContent="center" gap={2}>
-        <SoftButton 
-          color="info" 
-          size="small" 
-          onClick={() => handleEditLocalClick(local)}
-        >
-          Modifier
-        </SoftButton>
-        <SoftButton 
-          color="danger" 
-          size="small" 
-          onClick={() => handleDeleteLocalClick(local)}
-        >
-          Supprimer
-        </SoftButton>
-      </SoftBox>
-    )
-  }));
-
-  return { columns, rows };
-}
+export default localsTableData;

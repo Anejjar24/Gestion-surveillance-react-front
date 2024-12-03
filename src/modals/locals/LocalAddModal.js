@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -6,28 +6,16 @@ import PropTypes from 'prop-types';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { localService } from 'services/locaux/localService';
 
-function LocalEditModal({ 
+function LocalAddModal({ 
   show, 
   onClose, 
-  onLocalUpdated, 
-  initialLocal 
+  onLocalAdded 
 }) {
   const [local, setLocal] = useState({
-    id: null,
     nom: '',
     taille: '',
     type: ''
   });
-
-  useEffect(() => {
-    if (initialLocal) {
-      setLocal({
-        ...initialLocal,
-        // S'assurer que la taille est converties en chaîne pour l'affichage
-        taille: initialLocal.taille.toString()
-      });
-    }
-  }, [initialLocal]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,16 +29,23 @@ function LocalEditModal({
     e.preventDefault();
     try {
       // Convertir taille en nombre
-      const localToUpdate = {
+      const localToAdd = {
         ...local,
         taille: parseInt(local.taille, 10)
       };
 
-      await localService.updateLocal(localToUpdate);
-      onLocalUpdated();
+      const addedLocal = await localService.addLocal(localToAdd);
+      onLocalAdded(addedLocal);
       onClose();
+
+      // Réinitialiser le formulaire
+      setLocal({
+        nom: '',
+        taille: '',
+        type: ''
+      });
     } catch (error) {
-      console.error('Erreur lors de la mise à jour du local:', error);
+      console.error('Erreur lors de l\'ajout du local:', error);
       // TODO: Ajouter une gestion d'erreur conviviale pour l'utilisateur
     }
   };
@@ -58,7 +53,7 @@ function LocalEditModal({
   return (
     <Modal show={show} onHide={onClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Modifier un Local</Modal.Title>
+        <Modal.Title>Ajouter un Local</Modal.Title>
       </Modal.Header>
       <Form onSubmit={handleSubmit}>
         <Modal.Body>
@@ -105,7 +100,7 @@ function LocalEditModal({
             Annuler
           </Button>
           <Button variant="primary" type="submit">
-            Mettre à jour
+            Ajouter
           </Button>
         </Modal.Footer>
       </Form>
@@ -113,20 +108,10 @@ function LocalEditModal({
   );
 }
 
-LocalEditModal.propTypes = {
+LocalAddModal.propTypes = {
   show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onLocalUpdated: PropTypes.func.isRequired,
-  initialLocal: PropTypes.shape({
-    id: PropTypes.number,
-    nom: PropTypes.string,
-    taille: PropTypes.number,
-    type: PropTypes.string
-  })
+  onLocalAdded: PropTypes.func.isRequired
 };
 
-LocalEditModal.defaultProps = {
-  initialLocal: null
-};
-
-export default LocalEditModal;
+export default LocalAddModal;
