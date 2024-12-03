@@ -1,18 +1,23 @@
-/* eslint-disable react/prop-types */
-// Soft UI Dashboard React components
-import SoftBox from "components/SoftBox";
-import SoftTypography from "components/SoftTypography";
-import SoftAvatar from "components/SoftAvatar";
-import SoftBadge from "components/SoftBadge";
 
-// Images
-import team2 from "assets/images/team-2.jpg";
-import team3 from "assets/images/team-3.jpg";
-import team4 from "assets/images/team-4.jpg";
+import SoftBox from "components/SoftBox";
+
 import SoftButton from "components/SoftButton";
 
 import Icon from "@mui/material/Icon";
+
+import { RxOpenInNewWindow } from "react-icons/rx";
+
+
+import { useNavigate } from "react-router-dom";
+import newWindowIcon from "assets/images/new-window.png";
+
 const sessionsTableData = (sessions, onDeleteSessionClick, onEditSession) => {
+  const navigate = useNavigate();
+
+  const handleOpenDashboard = () => {
+    navigate("/dashboard");
+  };
+
   return {
     columns: [
       { name: "type", align: "center" },
@@ -26,22 +31,36 @@ const sessionsTableData = (sessions, onDeleteSessionClick, onEditSession) => {
       startDate: session.startDate,
       endDate: session.endDate,
       action: (
-        <SoftBox display="flex" justifyContent="center">
+        <SoftBox display="flex" justifyContent="center" alignItems="center">
+          <SoftButton
+            variant="text"
+            color="info"
+            onClick={handleOpenDashboard}
+            sx={{ 
+              minWidth: 'auto', 
+              padding: '4px', 
+              '& img': { width: '34px', height: '34px' } 
+            }}
+          >
+                        <RxOpenInNewWindow style={{ marginRight: '4px',fontSize: '50px !important' }} />
+
+          </SoftButton>
           
-          <SoftButton 
-            variant="text" 
+          <SoftButton
+            variant="text"
             color="dark"
             onClick={() => onEditSession(session)}
           >
             <Icon>edit</Icon>&nbsp;edit
           </SoftButton>
-          <SoftButton 
-            variant="text" 
+          <SoftButton
+            variant="text"
             color="error"
             onClick={() => onDeleteSessionClick(session)}
           >
             <Icon>delete</Icon>&nbsp;delete
           </SoftButton>
+          
         </SoftBox>
       ),
     }))

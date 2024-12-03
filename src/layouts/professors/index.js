@@ -57,7 +57,7 @@ function Professors() {
       setProfessors(fetchedProfessors);
       setLoading(false);
     } catch (err) {
-      console.error('Error loading professors:', err);
+      console.error('', err);
       setError(err);
       setLoading(false);
     }
@@ -149,7 +149,7 @@ function Professors() {
       {/* Loading and Error Handling */}
       <SoftBox mt={5} mb={3}>
         {loading && <SoftTypography>Loading professors...</SoftTypography>}
-        {error && <SoftTypography color="error">Error loading professors</SoftTypography>}
+        {error && <SoftTypography color="error"></SoftTypography>}
       </SoftBox>
       
       <SoftBox py={3}>

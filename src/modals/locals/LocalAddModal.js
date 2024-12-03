@@ -88,10 +88,8 @@ function LocalAddModal({
               required
             >
               <option value="">Sélectionnez un type</option>
-              <option value="Salle de classe">Salle de classe</option>
-              <option value="Amphithéâtre">Amphithéâtre</option>
-              <option value="Bureau">Bureau</option>
-              <option value="Laboratoire">Laboratoire</option>
+              <option value="Salle">Salle</option>
+              <option value="Amphi">Amphi</option>
             </Form.Select>
           </Form.Group>
         </Modal.Body>

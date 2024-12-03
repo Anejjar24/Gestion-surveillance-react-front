@@ -2,8 +2,6 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
 import SoftButton from "components/SoftButton";
-
-
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
@@ -11,7 +9,6 @@ import SoftTypography from "components/SoftTypography";
 // Soft UI Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 
-import SessionEditModal from "modals/sessions/SessionEditModal";
 // Overview page components
 import Header from "layouts/locals/components/Header";
 

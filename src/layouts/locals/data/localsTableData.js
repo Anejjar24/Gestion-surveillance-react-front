@@ -18,11 +18,15 @@ const localsTableData = (locals, onDeleteLocalClick, onEditLocal) => {
       type: (
         <SoftBadge 
           variant="gradient" 
-          badgeContent={local.type} 
-          color="success" 
-          size="xs" 
-          container 
-        />
+          color={
+            local.type === 'Salle' ? 'secondary' :
+            local.type === 'Amphi' ? 'dark' :
+            
+            'warning'
+          }
+        >
+          {local.type}
+        </SoftBadge>
       ),
       taille: `${local.taille}`,
       action: (

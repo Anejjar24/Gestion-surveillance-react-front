@@ -8,6 +8,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import SessionDateModal from "modals/sessions/SessionDateModal";
 import SessionDeleteModal from "modals/sessions/SessionDeleteModal";
 import SessionEditModal from "modals/sessions/SessionEditModal";
+import BasicLayout from "layouts/sessions/components/BasicLayout";
 // Overview page components
 import Header from "layouts/sessions/components/Header";
 import React, { useState, useEffect } from 'react';
@@ -120,7 +121,7 @@ const handleEditSessionClick = (session) => {
   //const { columns, rows } = sessionsTableData(sessions);
 
   return (
-    <DashboardLayout>
+    <BasicLayout>
       <Header />
       <SoftBox mt={5} mb={3}>
         {loading && <SoftTypography>Chargement des sessions...</SoftTypography>}
@@ -199,7 +200,7 @@ const handleEditSessionClick = (session) => {
         onConfirmDelete={handleConfirmDelete}
         sessionToDelete={selectedSession}
       />
-    </DashboardLayout>
+    </BasicLayout>
   );
 }
 

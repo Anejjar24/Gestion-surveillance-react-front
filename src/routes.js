@@ -34,6 +34,7 @@ import { FaClipboardList } from "react-icons/fa";
 import { BsFillBuildingsFill } from "react-icons/bs";
 import { RiCalendarScheduleFill } from "react-icons/ri";
 
+import { FaArrowAltCircleLeft } from "react-icons/fa";
 
 
 const routes = [
@@ -117,15 +118,7 @@ const routes = [
     component: <Options />,
     noCollapse: true,
   },
-  {
-    type: "collapse",
-    name: "Tables",
-    key: "tables",
-    route: "/tables",
-    icon: <Office size="20px" />,
-    component: <Tables />,
-    noCollapse: true,
-  },
+  
  
 
   {
@@ -136,52 +129,18 @@ const routes = [
     component: <Sessions />,
   },
   {
-    type: "collapse",
-    name: "Billing",
-    key: "billing",
-    route: "/billing",
-    icon: <CreditCard size="20px" />,
-    component: <Billing />,
+    type: "collapse", // Changez le type
+    name: "Back To Sessions",
+    key: "sessions",
+    route: "/sessions",
+    icon:  <FaArrowAltCircleLeft size="20px"/>,
+    component: <Options />,
     noCollapse: true,
+    component: <Sessions />,
   },
-  {
-    type: "collapse",
-    name: "Virtual Reality",
-    key: "virtual-reality",
-    route: "/virtual-reality",
-    icon: <Cube size="20px" />,
-    component: <VirtualReality />,
-    noCollapse: true,
-  },
-  {
-    type: "collapse",
-    name: "RTL",
-    key: "rtl",
-    route: "/rtl",
-    icon: <Settings size="20px" />,
-    component: <RTL />,
-    noCollapse: true,
-  },
-  { type: "title", title: "Account Pages", key: "account-pages" },
-  {
-    type: "collapse",
-    name: "Profile",
-    key: "profile",
-    route: "/profile",
-    icon: <CustomerSupport size="20px" />,
-    component: <Profile />,
-    noCollapse: true,
-  },
+
+ 
   
-  {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    route: "/authentication/sign-up",
-    icon: <SpaceShip size="20px" />,
-    component: <SignUp />,
-    noCollapse: true,
-  },
 ];
 
 export default routes;
