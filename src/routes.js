@@ -39,6 +39,7 @@ import { BsFillBuildingsFill } from "react-icons/bs";
 import { RiCalendarScheduleFill } from "react-icons/ri";
 
 import { FaArrowAltCircleLeft } from "react-icons/fa";
+import Modules from "layouts/modules";
 
 
 const routes = [
@@ -98,6 +99,16 @@ const routes = [
     route: "/professors/:departmentId", // Add parameter for department
     
     component: <Professors />,
+    noCollapse: true,
+  },
+  {
+    type: "route",
+    name: "Modules",
+    key: "modules",
+    protected: true,
+    route: "/modules/:optionId", // Add parameter for department
+    
+    component: <Modules />,
     noCollapse: true,
   },
   {

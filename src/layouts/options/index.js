@@ -5,6 +5,7 @@ import SoftButton from "components/SoftButton";
 
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
+import { useNavigate } from 'react-router-dom';
 
 // Soft UI Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -42,6 +43,7 @@ function Options() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [optionCount, setOptionCount] = useState(0);
+  const navigate = useNavigate();
 
   // Modal control states
   const [showAddModal, setShowAddModal] = useState(false);
@@ -116,13 +118,32 @@ function Options() {
     setSelectedOption(option);
     setShowEditModal(true);
   };
+  const handleNavigateToModules = (option) => {
+    navigate(`/modules/${option.id}`, {
+      state: { optionId: option.id, optionName: option.nom },
+    });
+  };
 
   // Generate table data
+  // const { columns, rows } = optionsTableData(
+  //   options, 
+  //   handleDeleteOptionClick, 
+  //   handleEditOptionClick
+  // );
+
   const { columns, rows } = optionsTableData(
-    options, 
-    handleDeleteOptionClick, 
-    handleEditOptionClick
-  );
+      options,
+      (option) => {
+        setSelectedOption(option);
+        setShowDeleteModal(true);
+      },
+      (option) => {
+        setSelectedOption(option);
+        setShowEditModal(true);
+      },
+      handleNavigateToModules
+    );
+  
 
   return (
     <DashboardLayout>

@@ -26,6 +26,7 @@ export const DepartmentService = {
   getAllDepartments: async () => {
     try {
       const response = await secureAxios.get(API_URL);
+      console.log('Réponse de l\'API:', response.data); 
       return response.data;
     } catch (error) {
       if (error.response?.status === 401) {
