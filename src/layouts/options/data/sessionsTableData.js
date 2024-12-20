@@ -15,16 +15,13 @@ import Icon from "@mui/material/Icon";
 const sessionsTableData = (sessions, onDeleteSessionClick, onEditSession) => {
   return {
     columns: [
-      { name: "type", align: "center" },
-      { name: "startDate", align: "center" },
-      { name: "endDate", align: "center"},
-      { name: "action", align: "center" },
+      { name: "name", align: "center" },
+     
     ],
     rows: sessions.map(session => ({
       session_id: session.session_id,
-      type: session.type,
-      startDate: session.startDate,
-      endDate: session.endDate,
+      nom: session.nom,
+      
       action: (
         <SoftBox display="flex" justifyContent="center">
           

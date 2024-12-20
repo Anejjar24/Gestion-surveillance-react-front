@@ -17,9 +17,10 @@ import DashboardNavbar from "layouts/options/components/Navbar";
 import breakpoints from "assets/theme/base/breakpoints";
 
 // Images
-import session from "assets/images/menu.png";
+import session from "assets/images/breakdown.png";
 import curved0 from "assets/images/curved-images/curved0.jpg";
-import { sessionService } from "services/sessions/sessionService"; 
+ 
+import { OptionService } from 'services/options/OptionService';
 
 import SoftButton from "components/SoftButton";
 
@@ -35,10 +36,10 @@ function Header() {
   useEffect(() => {
     const fetchSessionCount = async () => {
       try {
-        const count = await sessionService.getCountSessions();
+        const count = await OptionService.countAllOptions();
         setSessionCount(count);
       } catch (error) {
-        console.error("Erreur lors de la récupération du nombre de sessions :", error);
+        console.error("Erreur lors de la récupération du nombre des options :", error);
       }
     };
 

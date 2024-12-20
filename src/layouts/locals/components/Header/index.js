@@ -17,7 +17,8 @@ import DashboardNavbar from "layouts/locals/components/Navbar";
 import breakpoints from "assets/theme/base/breakpoints";
 
 // Images
-import session from "assets/images/smart-house.png";
+import session from 'assets/images/home.png';
+
 import curved0 from "assets/images/curved-images/curved0.jpg";
 import { sessionService } from "services/sessions/sessionService"; 
 

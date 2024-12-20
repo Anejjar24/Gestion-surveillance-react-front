@@ -1,3 +1,5 @@
+import { useAuth } from "services/authentification/AuthProvider";
+
 import { useState, useEffect } from "react";
 import Icon from "@mui/material/Icon";
 // @mui material components
@@ -22,7 +24,7 @@ import curved0 from "assets/images/curved-images/curved0.jpg";
 import { sessionService } from "services/sessions/sessionService"; 
 
 import SoftButton from "components/SoftButton";
-
+import AuthService from "services/authentification/authService";
 // Icon
 import { FiLogOut } from "react-icons/fi"; // Import the logout icon
 
@@ -56,11 +58,11 @@ function Header({ onOpenModal }) {
     return () => window.removeEventListener("resize", handleTabsOrientation);
   }, []);
 
-  // Handle logout
+  const { user, logout } = useAuth();
+  
   const handleLogout = () => {
-    // You can implement the logic for logging out here (e.g., clear session, tokens)
-    // After logging out, navigate to the SignUp page
-    navigate("/"); // Using useNavigate to redirect to Sign Up page
+    logout();
+    navigate('/authentication/sign-in');
   };
 
   return (

@@ -18,7 +18,8 @@ import breakpoints from "assets/theme/base/breakpoints";
 
 
 // Images
-import department from "assets/images/department.png";
+import department from 'assets/images/department1.png';
+
 import curved0 from "assets/images/curved-images/curved0.jpg";
 import { sessionService } from "services/sessions/sessionService"; 
 

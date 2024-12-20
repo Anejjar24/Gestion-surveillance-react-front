@@ -52,7 +52,7 @@ function Departments() {
       setDepartments(fetchedDepartments);
       setLoading(false);
     } catch (err) {
-      console.error('Error loading departments:', err);
+      console.error('', err);
       setError(err);
       setLoading(false);
     }
@@ -125,9 +125,6 @@ function Departments() {
   };
 
 
-
-
-
   // Update the table data generation to include navigation handler
   const { columns, rows } = departmentsTableData(
     departments, 
@@ -152,11 +149,7 @@ function Departments() {
             {/* Header Section */}
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftBox mb={0.5} display="flex" alignItems="center">
-                <img 
-                  src={department1} 
-                  alt="department icon" 
-                  style={{ width: "45px", height: "45px", marginRight: "12px" }} 
-                />
+                
                 <SoftTypography variant="h3" fontWeight="medium">
                   Departments
                 </SoftTypography>

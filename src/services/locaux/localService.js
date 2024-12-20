@@ -1,28 +1,51 @@
 import axios from 'axios';
+import { AuthService } from "services/authentification/authService";
 
-const API_URL = '/ProjetWeb/locals/';
-const API_URL_Count = '/ProjetWeb/locals/count';
+// Création d'une instance axios avec configuration par défaut
+const secureAxios = axios.create();
 
-export  const localService = {
+// Intercepteur pour ajouter le token à chaque requête
+secureAxios.interceptors.request.use(
+  (config) => {
+    const user = AuthService.getCurrentUser();
+    if (user && user.token) {
+      config.headers.Authorization = `Bearer ${user.token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+const API_URL = '/locals/';
+const API_URL_COUNT = '/locals/count';
+
+export const localService = {
   // Récupérer tous les locaux
   getAllLocals: async () => {
     try {
-      const response = await axios.get(API_URL);
+      const response = await secureAxios.get(API_URL);
       return response.data;
     } catch (error) {
-      console.error('Erreur lors de la récupération des locaux:', error);
+      if (error.response?.status === 401) {
+        AuthService.logout();
+        window.location.href = '/sign-in';
+      }
       throw error;
     }
   },
   
-  
   // Récupérer le nombre total de locaux
   getCountLocals: async () => {
     try {
-      const response = await axios.get(API_URL_Count);
+      const response = await secureAxios.get(API_URL_COUNT);
       return response.data; // Retourne la donnée brute (un entier)
     } catch (error) {
-      console.error("Erreur lors de la récupération du nombre de locaux:", error);
+      if (error.response?.status === 401) {
+        AuthService.logout();
+        window.location.href = '/sign-in';
+      }
       throw error;
     }
   },
@@ -30,10 +53,13 @@ export  const localService = {
   // Ajouter un local
   addLocal: async (local) => {
     try {
-      const response = await axios.post(API_URL, local);
+      const response = await secureAxios.post(API_URL, local);
       return response.data;
     } catch (error) {
-      console.error('Erreur lors de la création du local:', error);
+      if (error.response?.status === 401) {
+        AuthService.logout();
+        window.location.href = '/sign-in';
+      }
       throw error;
     }
   },
@@ -41,10 +67,13 @@ export  const localService = {
   // Supprimer un local
   deleteLocal: async (id) => {
     try {
-      const response = await axios.delete(`${API_URL}${id}`);
+      const response = await secureAxios.delete(`${API_URL}${id}`);
       return response.data;
     } catch (error) {
-      console.error('Erreur lors de la suppression du local:', error);
+      if (error.response?.status === 401) {
+        AuthService.logout();
+        window.location.href = '/sign-in';
+      }
       throw error;
     }
   },
@@ -52,11 +81,16 @@ export  const localService = {
   // Mettre à jour un local
   updateLocal: async (local) => {
     try {
-      const response = await axios.put(API_URL, local);
+      const response = await secureAxios.put(`${API_URL}${local.id}`, local);
       return response.data;
     } catch (error) {
-      console.error('Erreur lors de la mise à jour du local:', error);
+      if (error.response?.status === 401) {
+        AuthService.logout();
+        window.location.href = '/sign-in';
+      }
       throw error;
     }
   }
 };
+
+export default localService;

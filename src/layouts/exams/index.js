@@ -32,13 +32,7 @@ import PlatformSettings from "layouts/sessions/components/PlatformSettings";
 import profilesListData from "layouts/profile/data/profilesListData";
 
 // Images
-import homeDecor1 from "assets/images/home-decor-1.jpg";
-import homeDecor2 from "assets/images/home-decor-2.jpg";
-import homeDecor3 from "assets/images/home-decor-3.jpg";
-import team1 from "assets/images/team-1.jpg";
-import team2 from "assets/images/team-2.jpg";
-import team3 from "assets/images/team-3.jpg";
-import team4 from "assets/images/team-4.jpg";
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Table from "examples/Tables/Table";
@@ -172,11 +166,7 @@ const handleEditSessionClick = (session) => {
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftBox mb={0.5} display="flex" alignItems="center">
-                <img 
-                  src={hourglass} 
-                  alt="my custom icon" 
-                  style={{ width: "45px", height: "45px", marginRight: "12px" }} 
-                />
+               
                 <SoftTypography variant="h3" fontWeight="medium">
                 Exams
                 </SoftTypography>

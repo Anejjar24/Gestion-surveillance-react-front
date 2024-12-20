@@ -1,70 +1,117 @@
 import axios from 'axios';
+import { AuthService } from "services/authentification/authService";
 
-const API_URL = '/ProjetWeb/departements/';
-const API_URL_COUNT = '/ProjetWeb/departements/count';
+
+const API_URL = '/departments/';
+const API_URL_COUNT = '/departments/count';
+
+// Création d'une instance axios avec configuration par défaut
+const secureAxios = axios.create();
+
+// Intercepteur pour ajouter le token à chaque requête
+secureAxios.interceptors.request.use(
+  (config) => {
+    const user = AuthService.getCurrentUser();
+    if (user && user.token) {
+      config.headers.Authorization = `Bearer ${user.token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export const DepartmentService = {
-  // Get all departments
   getAllDepartments: async () => {
     try {
-      const response = await axios.get(API_URL);
+      const response = await secureAxios.get(API_URL);
       return response.data;
     } catch (error) {
-      console.error('Error retrieving departments:', error);
+      if (error.response?.status === 401) {
+        AuthService.logout();
+        window.location.href = '/sign-in';
+      }
       throw error;
     }
   },
-  
-  // Get total number of departments
+
   getCountDepartment: async () => {
     try {
-      const response = await axios.get(API_URL_COUNT);
-      return response.data; // Returns raw data (an integer)
+      const response = await secureAxios.get(API_URL_COUNT);
+      return response.data;
     } catch (error) {
-      console.error("Error retrieving department count:", error);
+      if (error.response?.status === 401) {
+        AuthService.logout();
+        window.location.href = '/sign-in';
+      }
       throw error;
     }
   },
 
-  // Add a new department
+  // addDepartment: async (department) => {
+  //   try {
+  //     const response = await secureAxios.post(API_URL, department);
+  //     return response.data;
+  //   } catch (error) {
+  //     if (error.response?.status === 401) {
+  //       AuthService.logout();
+  //       window.location.href = '/sign-in';
+  //     }
+  //     throw error;
+  //   }
+  // },
   addDepartment: async (department) => {
     try {
-      const response = await axios.post(API_URL, department);
+      const response = await secureAxios.post(API_URL, department, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       return response.data;
     } catch (error) {
-      console.error('Error creating department:', error);
+      if (error.response?.status === 401) {
+        AuthService.logout();
+        window.location.href = '/sign-in';
+      }
       throw error;
     }
   },
-
-  // Delete a department by ID
   deleteDepartment: async (id) => {
     try {
-      const response = await axios.delete(`${API_URL}${id}`);
+      const response = await secureAxios.delete(`${API_URL}${id}`);
       return response.data;
     } catch (error) {
-      console.error('Error deleting department:', error);
+      if (error.response?.status === 401) {
+        AuthService.logout();
+        window.location.href = '/sign-in';
+      }
       throw error;
     }
   },
 
   updateDepartment: async (department) => {
     try {
-      const response = await axios.put(`${API_URL}/${department.id}`, department);
+      const response = await secureAxios.put(`${API_URL}/${department.id}`, department);
       return response.data;
     } catch (error) {
-      console.error('Error updating department:', error);
+      if (error.response?.status === 401) {
+        AuthService.logout();
+        window.location.href = '/sign-in';
+      }
       throw error;
     }
-},
+  },
 
-  // Get a single department by ID (optional, but often useful)
   getDepartmentById: async (id) => {
     try {
-      const response = await axios.get(`${API_URL}${id}`);
+      const response = await secureAxios.get(`${API_URL}${id}`);
       return response.data;
     } catch (error) {
-      console.error(`Error retrieving department with ID ${id}:`, error);
+      if (error.response?.status === 401) {
+        AuthService.logout();
+        window.location.href = '/sign-in';
+      }
       throw error;
     }
   }

@@ -1,4 +1,6 @@
 
+
+
 import Dashboard from "layouts/dashboard";
 import Tables from "layouts/tables";
 import Sessions from "layouts/sessions";
@@ -6,8 +8,10 @@ import Billing from "layouts/billing";
 import VirtualReality from "layouts/virtual-reality";
 import RTL from "layouts/rtl";
 import Profile from "layouts/profile";
-import SignIn from "layouts/authentication/sign-in";
+
 import SignUp from "layouts/authentication/sign-up";
+//import SignUp from "layouts/security/sign-up";
+import SignIn from "layouts/authentication/sign-in";
 
 // Soft UI Dashboard React icons
 import Shop from "examples/Icons/Shop";
@@ -45,6 +49,7 @@ const routes = [
     route: "/dashboard",
     icon: <Shop size="25px" />,
     component: <Dashboard />,
+    protected: true,
     noCollapse: true,
   },
   {
@@ -54,6 +59,7 @@ const routes = [
     route: "/departments",
     icon:  <BsFillBuildingsFill size="20px"/>,
     component: <Departments />,
+    protected: true,
     noCollapse: true,
   },{
     type: "route", // Nouveau route par défaut
@@ -61,6 +67,7 @@ const routes = [
     key: "sign-up-default",
     route: "/", // Route racine
     component: <SignUp />,
+    protected: false,
   },
   
   {
@@ -70,6 +77,7 @@ const routes = [
     route: "/locals",
     icon:  <TbBuildingWarehouse size="20px"/>,
     component: <Locals />,
+    protected: true,
     noCollapse: true,
   },
   // {
@@ -86,6 +94,7 @@ const routes = [
     type: "route",
     name: "Professors",
     key: "professors",
+    protected: true,
     route: "/professors/:departmentId", // Add parameter for department
     
     component: <Professors />,
@@ -96,6 +105,7 @@ const routes = [
     name: "Exams",
     key: "exams",
     route: "/exams",
+    protected: true,
     icon:  <FaClipboardList size="20px"/>,
     component: <Exams />,
     noCollapse: true,
@@ -104,6 +114,7 @@ const routes = [
     type: "collapse",
     name: "Surveillances",
     key: "surveillances",
+    protected: true,
     route: "/surveillances",
     icon:  <RiCalendarScheduleFill size="20px"/>,
     component: <Surveillances />,
@@ -113,6 +124,7 @@ const routes = [
     type: "collapse",
     name: "Options",
     key: "options",
+    protected: true,
     route: "/options",
     icon:  <Settings size="20px"/>,
     component: <Options />,
@@ -121,11 +133,21 @@ const routes = [
   
  
 
+  
+  {
+    type: "route",
+    name: "Sign In",
+    key: "sign-in",
+    route: "/sign-in",
+    component: <SignIn />,
+   
+  },
   {
     type: "route", // Changez le type
     name: "Sessions",
     key: "sessions",
     route: "/sessions",
+    protected: true,
     component: <Sessions />,
   },
   {
@@ -134,7 +156,8 @@ const routes = [
     key: "sessions",
     route: "/sessions",
     icon:  <FaArrowAltCircleLeft size="20px"/>,
-    component: <Options />,
+    component: <Sessions />,
+    protected: true,
     noCollapse: true,
     component: <Sessions />,
   },

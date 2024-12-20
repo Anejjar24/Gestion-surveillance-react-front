@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const API_URL = '/ProjetWeb/enseignants/';
-const API_URL_COUNT = '/ProjetWeb/enseignants/count';
-const API_URL_COUNT_ALL = '/ProjetWeb/enseignants/count';
+const API_URL = '/enseignants/';
+const API_URL_COUNT = '/enseignants/count';
+const API_URL_COUNT_ALL = '/enseignants/count';
 
 export const EnseignantService = {
   // Obtenir tous les enseignants

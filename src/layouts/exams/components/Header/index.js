@@ -17,7 +17,7 @@ import DashboardNavbar from "layouts/exams/components/Navbar";
 import breakpoints from "assets/theme/base/breakpoints";
 
 // Images
-import session from "assets/images/exam.png";
+import session from "assets/images/exam1.png";
 import curved0 from "assets/images/curved-images/curved0.jpg";
 import { sessionService } from "services/sessions/sessionService"; 
 

@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v4.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect, useMemo } from "react";
 
 // react-router components
@@ -47,6 +32,7 @@ import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "contex
 
 // Images
 import brand from "assets/images/logo-ct.png";
+import { ProtectedRoute } from "services/authentification/AuthProvider"; // Ajustez le chemin selon votre structure de dossiers
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -95,18 +81,36 @@ export default function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
-  const getRoutes = (allRoutes) =>
-    allRoutes.map((route) => {
-      if (route.collapse) {
-        return getRoutes(route.collapse);
-      }
+  // Dynamically get routes and handle collapses
+  // Dans la fonction getRoutes, ajoutez la protection des routes
+const getRoutes = (allRoutes) =>
+  allRoutes.map((route) => {
+    if (route.collapse) {
+      return getRoutes(route.collapse);
+    }
 
-      if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
+    if (route.route) {
+      // Si la route nécessite une authentification
+      if (route.protected) {
+        return (
+          <Route
+            exact
+            path={route.route}
+            element={
+              <ProtectedRoute>
+                {route.component}
+              </ProtectedRoute>
+            }
+            key={route.key}
+          />
+        );
       }
+      
+      return <Route exact path={route.route} element={route.component} key={route.key} />;
+    }
 
-      return null;
-    });
+    return null;
+  });
 
   const configsButton = (
     <SoftBox

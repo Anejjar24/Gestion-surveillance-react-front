@@ -73,7 +73,7 @@ function Sessions() {
     await fetchSessions();
     await fetchSessionCount();
   };
-
+  
   // Nouvelle fonction pour supprimer une session
   const handleDeleteSession = async (id) => {
     try {

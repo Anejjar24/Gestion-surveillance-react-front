@@ -172,11 +172,7 @@ const handleEditSessionClick = (session) => {
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
               <SoftBox mb={0.5} display="flex" alignItems="center">
-                <img 
-                  src={hourglass} 
-                  alt="my custom icon" 
-                  style={{ width: "45px", height: "45px", marginRight: "12px" }} 
-                />
+                
                 <SoftTypography variant="h3" fontWeight="medium">
                 Surveillances
                 </SoftTypography>
