@@ -17,11 +17,14 @@ import { ModuleService } from "services/modules/ModuleService";
 import ModuleAddModal from "modals/modules/ModuleAddModal";
 import ModuleDeleteModal from "modals/modules/ModuleDeleteModal";
 import ModuleEditModal from "modals/modules/ModuleEditModal";
+import ModuleImportModal from "modals/modules/ModuleImportModal";  // Assurez-vous que le chemin est correct
 
 // Données des modules
 import modulesTableData from 'layouts/modules/data/modulesTableData';
 
 function Modules() {
+      const [showImportModal, setShowImportModal] = useState(false);
+  
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -52,6 +55,11 @@ function Modules() {
     } catch (err) {
       console.error("Error fetching modules:", err);
     }
+  };
+  const handleImportSuccess = async () => {
+    setShowImportModal(false); // Fermer le modal après importation
+    await fetchModules(); // Recharger la liste des professeurs
+    await fetchModulesCount(); // Recharger le nombre de professeurs
   };
 
   // Fetch du nombre de modules
@@ -177,6 +185,15 @@ function Modules() {
                     Back to Options
                   </SoftButton>
                 )}
+                 <SoftButton 
+  variant="gradient" 
+  color="success" 
+  sx={{ fontSize: '1rem', marginRight: '10px' }}
+  onClick={() => setShowImportModal(true)}
+>
+  <Icon sx={{ fontWeight: "bold" }}>upload</Icon>
+  &nbsp;Import CSV
+</SoftButton>
                 <SoftButton 
                   variant="gradient" 
                   color="info" 
@@ -227,8 +244,16 @@ function Modules() {
         onConfirmDelete={handleDeleteModule}
         moduleToDelete={selectedModule}
       />
+      <ModuleImportModal
+  show={showImportModal}
+  onClose={() => setShowImportModal(false)}
+  onImportSuccess={handleImportSuccess}
+  optionId={optionId} // Fixed prop name
+/>
     </DashboardLayout>
   );
 }
+
+
 
 export default Modules;

@@ -17,6 +17,7 @@ import Header from "layouts/departments/components/Header";
 import DepartmentAddModal from "modals/departements/DepartmentAddModal";
 import DepartmentEditModal from "modals/departements/DepartmentEditModal";
 import DepartmentDeleteModal from "modals/departements/DepartmentDeleteModal";
+import DepartmentImportModal from "modals/departements/DepartmentImportModal";  // Assurez-vous que le chemin est correct
 
 // Services
 import { DepartmentService } from 'services/dapartments/departmentService';
@@ -28,6 +29,8 @@ import departmentsTableData from 'layouts/departments/data/departmentsTableData'
 import department1 from 'assets/images/department1.png';
 import { useNavigate } from 'react-router-dom';
 function Departments() {
+    const [showImportModal, setShowImportModal] = useState(false);
+  
   // State for departments
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -162,6 +165,15 @@ function Departments() {
 
               {/* Add Department Button */}
               <SoftBox display="flex" justifyContent="flex-end" alignItems="center">
+              <SoftButton 
+      variant="gradient" 
+      color="info" 
+      sx={{ fontSize: '1rem', marginRight: '1rem' }}
+      onClick={() => setShowImportModal(true)}
+    >
+      <Icon sx={{ fontWeight: "bold" }}>upload_file</Icon>
+      &nbsp;Import CSV
+    </SoftButton>
                 <SoftButton 
                   variant="gradient" 
                   color="info" 
@@ -211,6 +223,14 @@ function Departments() {
         onConfirmDelete={handleDeleteDepartment}
         departmentToDelete={selectedDepartment}
       />
+       <DepartmentImportModal
+          show={showImportModal}
+          onClose={() => setShowImportModal(false)}
+          onImportSuccess={async () => {
+            await fetchDepartments();
+            await fetchDepartmentCount();
+          }}
+        />
     </DashboardLayout>
   );
 }

@@ -3,12 +3,28 @@ import axios from 'axios';
 const API_URL = '/enseignants/';
 const API_URL_COUNT = '/enseignants/count';
 const API_URL_COUNT_ALL = '/enseignants/count';
+// Create an axios instance with default configuration
+const secureAxios = axios.create();
+
+// Interceptor to add the token to each request
+secureAxios.interceptors.request.use(
+  (config) => {
+    const user = AuthService.getCurrentUser();
+    if (user && user.token) {
+      config.headers.Authorization = `Bearer ${user.token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export const EnseignantService = {
   // Obtenir tous les enseignants
   getAllEnseignants: async () => {
     try {
-      const response = await axios.get(API_URL);
+      const response = await secureAxios.get(API_URL);
       return response.data;
     } catch (error) {
       console.error('Erreur de récupération des enseignants:', error);
@@ -99,7 +115,27 @@ export const EnseignantService = {
       console.error(`Erreur de récupération du nombre d'enseignants du département ${departmentId}:`, error);
       throw error;
     }
+  }, importEnseignantsFromCSV: async (departmentId, file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await axios.post(
+        `${API_URL}department/${departmentId}/import`, 
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Import error details:", error.response);
+      throw new Error(error.response?.data?.message || "Error importing file");
+    }
   }
 };
+secureAxios.defaults.withCredentials = true;
 
 export default EnseignantService;

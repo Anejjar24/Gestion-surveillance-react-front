@@ -13,11 +13,16 @@ import BasicLayout from "layouts/sessions/components/BasicLayout";
 import Header from "layouts/sessions/components/Header";
 import React, { useState, useEffect } from 'react';
 import Table from "examples/Tables/Table";
+
+
 /// Service and Data
+import SessionImportModal from "modals/sessions/SessionImportModal";  // Assurez-vous que le chemin est correct
+
 import { sessionService } from 'services/sessions/sessionService';
 import sessionsTableData from 'layouts/sessions/data/sessionsTableData';
 import hourglass from 'assets/images/hourglass.png';
 function Sessions() {
+  const [showImportModal, setShowImportModal] = useState(false);
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -148,6 +153,15 @@ const handleEditSessionClick = (session) => {
               </SoftBox>
 
               <SoftBox display="flex" justifyContent="flex-end" alignItems="center">
+              <SoftButton 
+      variant="gradient" 
+      color="info" 
+      sx={{ fontSize: '1rem', marginRight: '1rem' }}
+      onClick={() => setShowImportModal(true)}
+    >
+      <Icon sx={{ fontWeight: "bold" }}>upload_file</Icon>
+      &nbsp;Import CSV
+    </SoftButton>
                 <SoftButton 
                   variant="gradient" 
                   color="info" 
@@ -200,6 +214,14 @@ const handleEditSessionClick = (session) => {
         onConfirmDelete={handleConfirmDelete}
         sessionToDelete={selectedSession}
       />
+      <SessionImportModal 
+    show={showImportModal}
+    onClose={() => setShowImportModal(false)}
+    onImportSuccess={async () => {
+      await fetchSessions();
+      await fetchSessionCount();
+    }}
+  />
     </BasicLayout>
   );
 }

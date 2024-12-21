@@ -5,22 +5,20 @@ import Header from "layouts/professors/components/Header";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftButton from "components/SoftButton";
-
 import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
 import Table from "examples/Tables/Table";
- // Adjust import path
- import { EnseignantService } from 'services/professors/enseignantService';
-
-import hourglass from "assets/images/hourglass.png"; // Adjust import path
-
+import { EnseignantService } from 'services/professors/enseignantService';
+import hourglass from "assets/images/hourglass.png";
 import EnseignantAddModal from "modals/enseignants/EnseignantAddModal";
 import EnseignantDeleteModal from "modals/enseignants/EnseignantDeleteModal";
 import EnseignantEditModal from "modals/enseignants/EnseignantEditModal";
 import professorsTableData from 'layouts/professors/data/professorsTableData';
-
+import EnseignantImportModal from "modals/enseignants/EnseignantImportModal";  // Assurez-vous que le chemin est correct
 
 function Professors() {
+    const [showImportModal, setShowImportModal] = useState(false);
+  
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -117,7 +115,11 @@ function Professors() {
       console.error('Error deleting professor:', error);
     }
   };
-
+  const handleImportSuccess = async () => {
+    setShowImportModal(false); // Fermer le modal après importation
+    await fetchProfessors(); // Recharger la liste des professeurs
+    await fetchProfessorsCount(); // Recharger le nombre de professeurs
+  };
   // Handle delete professor click
   const handleDeleteProfessorClick = (professor) => {
     setSelectedProfessor(professor);
@@ -149,7 +151,7 @@ function Professors() {
       {/* Loading and Error Handling */}
       <SoftBox mt={5} mb={3}>
         {loading && <SoftTypography>Loading professors...</SoftTypography>}
-        {error && <SoftTypography color="error"></SoftTypography>}
+        {error && <SoftTypography color="error">Error loading professors.</SoftTypography>}
       </SoftBox>
       
       <SoftBox py={3}>
@@ -187,6 +189,16 @@ function Professors() {
                     Back to Departments
                   </SoftButton>
                 )}
+                 <SoftButton 
+  variant="gradient" 
+  color="success" 
+  sx={{ fontSize: '1rem', marginRight: '10px' }}
+  onClick={() => setShowImportModal(true)}
+>
+  <Icon sx={{ fontWeight: "bold" }}>upload</Icon>
+  &nbsp;Import CSV
+</SoftButton>
+
                 <SoftButton 
                   variant="gradient" 
                   color="info" 
@@ -200,44 +212,55 @@ function Professors() {
             </SoftBox>
 
             {/* Professors Table */}
-            <SoftBox
-              sx={{
-                "& .MuiTableRow-root:not(:last-child)": {
-                  "& td": {
-                    borderBottom: ({ borders: { borderWidth, borderColor } }) =>
-                      `${borderWidth[1]} solid ${borderColor}`,
+            {professors.length === 0 ? (
+              <SoftBox py={3}>
+                <SoftTypography></SoftTypography>
+              </SoftBox>
+            ) : (
+              <SoftBox
+                sx={{
+                  "& .MuiTableRow-root:not(:last-child)": {
+                    "& td": {
+                      borderBottom: ({ borders: { borderWidth, borderColor } }) =>
+                        `${borderWidth[1]} solid ${borderColor}`,
+                    },
                   },
-                },
-              }}
-            >
-              <Table columns={columns} rows={rows} />
-            </SoftBox>
+                }}
+              >
+                <Table columns={columns} rows={rows} />
+              </SoftBox>
+            )}
           </Card>
         </SoftBox>
       </SoftBox>
 
       {/* Modals */}
-      {/* Modals */}
-<EnseignantAddModal 
-  show={showAddModal} 
-  onClose={() => setShowAddModal(false)}
-  onEnseignantAdded={handleProfessorAdded}
-  departmentId={departmentId}
-/>
+      <EnseignantAddModal 
+        show={showAddModal} 
+        onClose={() => setShowAddModal(false)}
+        onEnseignantAdded={handleProfessorAdded}
+        departmentId={departmentId}
+      />
 
-<EnseignantEditModal 
-  show={showEditModal} 
-  onClose={() => setShowEditModal(false)}
-  onEnseignantUpdated={handleProfessorUpdated}
-  initialEnseignant={selectedProfessor}
-/>
+      <EnseignantEditModal 
+        show={showEditModal} 
+        onClose={() => setShowEditModal(false)}
+        onEnseignantUpdated={handleProfessorUpdated}
+        initialEnseignant={selectedProfessor}
+      />
 
-<EnseignantDeleteModal 
-  show={showDeleteModal} 
-  onClose={() => setShowDeleteModal(false)}
-  onConfirmDelete={handleDeleteProfessor}
-  enseignantToDelete={selectedProfessor}
-/>
+      <EnseignantDeleteModal 
+        show={showDeleteModal} 
+        onClose={() => setShowDeleteModal(false)}
+        onConfirmDelete={handleDeleteProfessor}
+        enseignantToDelete={selectedProfessor}
+      />
+       <EnseignantImportModal
+        show={showImportModal}
+        onClose={() => setShowImportModal(false)}
+        onImportSuccess={handleImportSuccess}
+        departmentId={departmentId}
+      />
     </DashboardLayout>
   );
 }

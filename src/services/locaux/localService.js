@@ -22,6 +22,22 @@ const API_URL = '/locals/';
 const API_URL_COUNT = '/locals/count';
 
 export const localService = {
+  importLocauxFromCSV: async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await secureAxios.post(`${API_URL}import`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Import error details:", error.response);
+      throw new Error(error.response?.data?.message || "Error importing file");
+    }
+  },
   // Récupérer tous les locaux
   getAllLocals: async () => {
     try {
@@ -92,5 +108,6 @@ export const localService = {
     }
   }
 };
+secureAxios.defaults.withCredentials = true;
 
 export default localService;

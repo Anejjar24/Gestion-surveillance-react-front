@@ -22,6 +22,21 @@ secureAxios.interceptors.request.use(
 );
 
 export const OptionService = {
+  importOptionsFromCSV: async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await secureAxios.post("/options/import", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || "Error importing file");
+    }
+  },
   getAllOptions: async () => {
     try {
       const response = await secureAxios.get(API_URL);
@@ -155,5 +170,6 @@ export const OptionService = {
     }
   }
 };
+secureAxios.defaults.withCredentials = true;
 
 export default OptionService;

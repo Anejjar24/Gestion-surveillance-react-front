@@ -27,12 +27,15 @@ import LocalEditModal from "modals/locals/LocalEditModal";
 
 
 import localsTableData from 'layouts/locals/data/localsTableData';
+import LocauxImportModal from "modals/locals/LocauxImportModal";  // Assurez-vous que le chemin est correct
 
 
 import DepartmentAddModal from "modals/departements/DepartmentAddModal";
 
 
 function Locals() {
+  const [showImportModal, setShowImportModal] = useState(false);
+  
   const [locals, setLocals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -162,6 +165,15 @@ function Locals() {
               </SoftBox>
 
               <SoftBox display="flex" justifyContent="flex-end" alignItems="center">
+              <SoftButton 
+      variant="gradient" 
+      color="info" 
+      sx={{ fontSize: '1rem', marginRight: '1rem' }}
+      onClick={() => setShowImportModal(true)}
+    >
+      <Icon sx={{ fontWeight: "bold" }}>upload_file</Icon>
+      &nbsp;Import CSV
+    </SoftButton>
                 <SoftButton 
                   variant="gradient" 
                   color="info" 
@@ -169,7 +181,7 @@ function Locals() {
                   onClick={handleAddLocalClick}
                 >
                   <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                  &nbsp;Ajouter un Local
+                  &nbsp;add new Local
                 </SoftButton>
               </SoftBox>
             </SoftBox>
@@ -216,6 +228,14 @@ function Locals() {
         onConfirmDelete={handleConfirmDelete}
         localToDelete={selectedLocal}
       />
+      <LocauxImportModal
+                show={showImportModal}
+                onClose={() => setShowImportModal(false)}
+                onImportSuccess={async () => {
+                  await fetchLocals();
+                  await fetchLocalCount();
+                }}
+              />
     </DashboardLayout>
   );
 }

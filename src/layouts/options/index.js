@@ -33,11 +33,14 @@ import  OptionAddModal  from 'modals/options/OptionAddModal';
 import  OptionDeleteModal  from 'modals/options/OptionDeleteModal';
 
 import  OptionEditModal  from 'modals/options/OptionEditModal';
+import OptionImportModal from "modals/options/OptionImportModal";  // Assurez-vous que le chemin est correct
 
 
 import { OptionService } from 'services/options/OptionService';
 import optionsTableData from 'layouts/options/data/optionsTableData';
 function Options() {
+      const [showImportModal, setShowImportModal] = useState(false);
+  
   // State management
   const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -172,6 +175,15 @@ function Options() {
 
               {/* Add Option Button */}
               <SoftBox display="flex" justifyContent="flex-end" alignItems="center">
+              <SoftButton 
+      variant="gradient" 
+      color="info" 
+      sx={{ fontSize: '1rem', marginRight: '1rem' }}
+      onClick={() => setShowImportModal(true)}
+    >
+      <Icon sx={{ fontWeight: "bold" }}>upload_file</Icon>
+      &nbsp;Import CSV
+    </SoftButton>
                 <SoftButton 
                   variant="gradient" 
                   color="info" 
@@ -221,6 +233,14 @@ function Options() {
         onConfirmDelete={handleDeleteOption}
         optionToDelete={selectedOption}
       />
+      <OptionImportModal
+                show={showImportModal}
+                onClose={() => setShowImportModal(false)}
+                onImportSuccess={async () => {
+                  await fetchOptions();
+                  await fetchOptionCount();
+                }}
+              />
     </DashboardLayout>
   );
 }

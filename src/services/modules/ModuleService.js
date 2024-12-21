@@ -18,7 +18,7 @@ secureAxios.interceptors.request.use(
 export const ModuleService = {
   getAllModules: async () => {
     try {
-      const response = await secureAxios.get(API_URL);
+      const response = await axios.get(API_URL);
       return response.data;
     } catch (error) {
       handleAuthError(error);
@@ -28,7 +28,7 @@ export const ModuleService = {
 
   getModulesByOptionId: async (optionId) => {
     try {
-      const response = await secureAxios.get(`${API_URL}option/${optionId}`);
+      const response = await axios.get(`${API_URL}option/${optionId}`);
       return response.data;
     } catch (error) {
       handleAuthError(error);
@@ -38,7 +38,7 @@ export const ModuleService = {
 
   countModulesByOptionId: async (optionId) => {
     try {
-      const response = await secureAxios.get(`${API_URL}count/option/${optionId}`);
+      const response = await axios.get(`${API_URL}count/option/${optionId}`);
       return response.data;
     } catch (error) {
       handleAuthError(error);
@@ -48,7 +48,7 @@ export const ModuleService = {
 
   addModule: async (module) => {
     try {
-      const response = await secureAxios.post(API_URL, module, {
+      const response = await axios.post(API_URL, module, {
         headers: { "Content-Type": "application/json" },
       });
       return response.data;
@@ -60,7 +60,7 @@ export const ModuleService = {
 
   updateModule: async (id, moduleDetails) => {
     try {
-      const response = await secureAxios.put(`${API_URL}${id}`, moduleDetails, {
+      const response = await axios.put(`${API_URL}${id}`, moduleDetails, {
         headers: { "Content-Type": "application/json" },
       });
       return response.data;
@@ -72,18 +72,35 @@ export const ModuleService = {
 
   deleteModule: async (id) => {
     try {
-      const response = await secureAxios.delete(`${API_URL}${id}`);
+      const response = await axios.delete(`${API_URL}${id}`);
       return response.data;
     } catch (error) {
       handleAuthError(error);
       throw error;
     }
   },
-};
+  importModulesFromCSV: async (optionId, file) => {
+    const formData = new FormData();
+    formData.append("file", file);
 
-function handleAuthError(error) {
-  if (error.response?.status === 401) {
-    AuthService.logout();
-    window.location.href = "/sign-in";
+    try {
+      const response = await axios.post(
+        `${API_URL}option/${optionId}/import`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Import error details:", error.response);
+      throw new Error(error.response?.data?.message || "Error importing file");
+    }
   }
-}
+
+};
+secureAxios.defaults.withCredentials = true;
+
+
