@@ -1,10 +1,8 @@
 import axios from 'axios';
 import { AuthService } from "services/authentification/authService";
 
-// Création d'une instance axios avec configuration par défaut
 const secureAxios = axios.create();
 
-// Intercepteur pour ajouter le token à chaque requête
 secureAxios.interceptors.request.use(
   (config) => {
     const user = AuthService.getCurrentUser();
@@ -18,27 +16,10 @@ secureAxios.interceptors.request.use(
   }
 );
 
-const API_URL = '/sessions/';
-const API_URL_COUNT = '/sessions/count';
+const API_URL = '/exams';
 
-export const sessionService = {
-  // Récupérer toutes les sessions
-  importSessionsFromCSV: async (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const response = await secureAxios.post("/sessions/import", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.message || "Error importing file");
-    }
-  },
-  getAllSessions: async () => {
+export const examService = {
+  getAllExams: async () => {
     try {
       const response = await secureAxios.get(API_URL);
       return response.data;
@@ -51,10 +32,9 @@ export const sessionService = {
     }
   },
 
-  // Récupérer le nombre total de sessions
-  getCountSessions: async () => {
+  getExamsByDate: async (date) => {
     try {
-      const response = await secureAxios.get(API_URL_COUNT);
+      const response = await secureAxios.get(`${API_URL}date/${date}`);
       return response.data;
     } catch (error) {
       if (error.response?.status === 401) {
@@ -65,10 +45,9 @@ export const sessionService = {
     }
   },
 
-  // Ajouter une session
-  addSession: async (session) => {
+  getExamById: async (id) => {
     try {
-      const response = await secureAxios.post(API_URL, session);
+      const response = await secureAxios.get(`${API_URL}${id}`);
       return response.data;
     } catch (error) {
       if (error.response?.status === 401) {
@@ -79,8 +58,33 @@ export const sessionService = {
     }
   },
 
-  // Supprimer une session
-  deleteSession: async (id) => {
+  createExam: async (exam) => {
+    try {
+      const response = await secureAxios.post(API_URL, exam);
+      return response.data;
+    } catch (error) {
+      if (error.response?.status === 401) {
+        AuthService.logout();
+        window.location.href = '/sign-in';
+      }
+      throw error;
+    }
+  },
+
+  updateExam: async (id, exam) => {
+    try {
+      const response = await secureAxios.put(`${API_URL}${id}`, exam);
+      return response.data;
+    } catch (error) {
+      if (error.response?.status === 401) {
+        AuthService.logout();
+        window.location.href = '/sign-in';
+      }
+      throw error;
+    }
+  },
+
+  deleteExam: async (id) => {
     try {
       const response = await secureAxios.delete(`${API_URL}${id}`);
       return response.data;
@@ -91,23 +95,16 @@ export const sessionService = {
       }
       throw error;
     }
-  },
-
-  // Mettre à jour une session
-  updateSession: async (session) => {
+  }, getExamsByDateAndTime: async (date, startTime, endTime, sessionId) => {
     try {
-      const response = await secureAxios.put(`${API_URL}${session.id}`, session);
-      return response.data;
-    } catch (error) {
-      if (error.response?.status === 401) {
-        AuthService.logout();
-        window.location.href = '/sign-in';
-      }
-      throw error;
-    }
-  },getSessionSchedule: async (id) => {
-    try {
-      const response = await secureAxios.get(`${API_URL}${id}/table`);
+      const response = await secureAxios.get(`${API_URL}/findByDateAndTime`, {
+        params: {
+          date,
+          startTime,
+          endTime,
+          sessionId
+        }
+      });
       return response.data;
     } catch (error) {
       if (error.response?.status === 401) {
@@ -118,6 +115,6 @@ export const sessionService = {
     }
   }
 };
-secureAxios.defaults.withCredentials = true;
-export default sessionService;
 
+secureAxios.defaults.withCredentials = true;
+export default examService;

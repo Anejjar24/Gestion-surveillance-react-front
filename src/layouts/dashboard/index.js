@@ -25,11 +25,27 @@ import { DepartmentService } from 'services/dapartments/departmentService';
 import { EnseignantService } from 'services/professors/enseignantService';
 import { localService } from 'services/locaux/localService';
 import { sessionService } from 'services/sessions/sessionService';
+import { useParams } from "react-router-dom";
+
 
 function Dashboard() {
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
+  const { sessionId } = useParams(); // Récupérer l'ID de session depuis la route
+  const [sessionData, setSessionData] = useState(null);
 
+  // useEffect(() => {
+  //   const fetchSessionData = async () => {
+  //     try {
+  //       const data = await sessionService.getSessionSchedule(sessionId); // Appeler le service pour charger les données
+  //       setSessionData(data);
+  //     } catch (error) {
+  //       console.error("Error fetching session data:", error);
+  //     }
+  //   };
+
+  //   fetchSessionData();
+  // }, [sessionId]);
   const [departmentCount, setDepartmentCount] = useState(0);
   const [enseignantCount, setEnseignantCount] = useState(0);
   const [localCount, setLocalCount] = useState(0);

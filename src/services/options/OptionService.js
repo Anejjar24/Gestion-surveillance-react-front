@@ -168,7 +168,21 @@ export const OptionService = {
       }
       throw error;
     }
+  },// OptionService.js
+
+  getOptionById: async (id) => {
+    try {
+      const response = await secureAxios.get(`${API_URL}${id}`);
+      return response.data;
+    } catch (error) {
+      if (error.response?.status === 401) {
+        AuthService.logout();
+        window.location.href = '/sign-in';
+      }
+      throw error;
+    }
   }
+  
 };
 secureAxios.defaults.withCredentials = true;
 

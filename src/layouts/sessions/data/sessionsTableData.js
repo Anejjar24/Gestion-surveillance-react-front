@@ -14,8 +14,15 @@ import newWindowIcon from "assets/images/new-window.png";
 const sessionsTableData = (sessions, onDeleteSessionClick, onEditSession) => {
   const navigate = useNavigate();
 
-  const handleOpenDashboard = () => {
-    navigate("/dashboard");
+  // const handleOpenDashboard = () => {
+  //  // localStorage.setItem("selectedSessionId", sessionId);
+
+  //   navigate("/dashboard");
+  // };
+
+  const handleOpenDashboard = (sessionId) => {
+    localStorage.setItem("selectedSessionId", sessionId);
+    navigate(`/dashboard/${sessionId}`); // Navigue vers un tableau de bord spécifique à la session
   };
 
   return {
@@ -35,7 +42,8 @@ const sessionsTableData = (sessions, onDeleteSessionClick, onEditSession) => {
           <SoftButton
             variant="text"
             color="info"
-            onClick={handleOpenDashboard}
+            //onClick={handleOpenDashboard}
+            onClick={() => handleOpenDashboard(session.session_id)}
             sx={{ 
               minWidth: 'auto', 
               padding: '4px', 

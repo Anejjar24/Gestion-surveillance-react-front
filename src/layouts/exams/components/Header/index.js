@@ -33,16 +33,7 @@ function Header() {
  
 
   useEffect(() => {
-    const fetchSessionCount = async () => {
-      try {
-        const count = await sessionService.getCountSessions();
-        setSessionCount(count);
-      } catch (error) {
-        console.error("Erreur lors de la récupération du nombre de sessions :", error);
-      }
-    };
-
-    fetchSessionCount();
+    
 
     // Existing tab orientation logic
     function handleTabsOrientation() {

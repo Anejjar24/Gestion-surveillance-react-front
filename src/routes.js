@@ -1,6 +1,4 @@
 
-
-
 import Dashboard from "layouts/dashboard";
 import Tables from "layouts/tables";
 import Sessions from "layouts/sessions";
@@ -28,6 +26,8 @@ import Locals from "layouts/locals";
 import Professors from "layouts/professors";
 import Surveillances from "layouts/surveillances";
 import Exams from "layouts/exams";
+import ExamDetails from "layouts/exams/ExamDetails"; 
+
 import Options from "layouts/options";
 
 
@@ -43,6 +43,15 @@ import Modules from "layouts/modules";
 
 
 const routes = [
+  {
+    type: "route",
+    name: "Exam Details",
+    key: "exam-details",
+    route: "/exam/:sessionId/:date/:slot/:startTime/:endTime",
+    component: <ExamDetails/>,
+    protected: true,
+    noCollapse: true,
+  },
   {
     type: "collapse",
     name: "Dashboard",
@@ -90,7 +99,15 @@ const routes = [
   //   component: <Professors />,
   //   noCollapse: true,
   // },
-
+  {
+    type: "route",
+    name: "Session Dashboard",
+    key: "session-dashboard",
+    route: "/dashboard/:sessionId", // Route dynamique
+    protected: true,
+    component: <Dashboard />, // Composant du tableau de bord
+    noCollapse: true,
+  },
   {
     type: "route",
     name: "Professors",

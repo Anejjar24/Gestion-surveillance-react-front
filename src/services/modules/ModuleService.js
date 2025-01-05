@@ -99,6 +99,34 @@ export const ModuleService = {
       throw new Error(error.response?.data?.message || "Error importing file");
     }
   }
+  ,
+  // ModuleService.js
+// getModuleById: async (id) => {
+//   try {
+//     const response = await axios.get(`${API_URL}${id}`);
+//     return response.data;
+//   } catch (error) {
+//     handleAuthError(error);
+//     throw error;
+//   }
+// }
+getModuleById: async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}${id}`);
+    return response.data;
+  } catch (error) {
+    if (error.response?.status === 401) {
+      // Si l'utilisateur n'est pas authentifié, déconnecter et rediriger
+      AuthService.logout();
+      window.location.href = '/sign-in';
+    }
+    // Gérer d'autres erreurs ou les afficher
+    console.error("Erreur lors de la récupération du module:", error);
+    throw error; // Rejeter l'erreur pour le traitement dans les autres parties du code
+  }
+}
+
+
 
 };
 secureAxios.defaults.withCredentials = true;

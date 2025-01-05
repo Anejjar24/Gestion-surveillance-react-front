@@ -52,111 +52,7 @@ import hourglass from 'assets/images/calendar.png';
 //import SoftButton from "components/SoftButton";
 
 function Surveillances() {
-  const [sessions, setSessions] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedSession, setSelectedSession] = useState(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  const [showModal, setShowModal] = useState(false);
-  const [sessionCount, setSessionCount] = useState(0);
-  // Fetch sessions function
-  const fetchSessions = async () => {
-    try {
-      setLoading(true);
-      const fetchedSessions = await sessionService.getAllSessions();
-      setSessions(fetchedSessions);
-      setLoading(false);
-    } catch (err) {
-      console.error('Erreur de chargement des sessions:', err);
-      setError(err);
-      setLoading(false);
-    }
-  };
-  const fetchSessionCount = async () => {
-    try {
-      const count = await sessionService.getCountSessions();
-      setSessionCount(count);
-    } catch (error) {
-      console.error("Erreur lors de la récupération du nombre de sessions :", error);
-    }
-  };
-
-  // Initial fetch
-  useEffect(() => {
-    fetchSessions();
-    fetchSessionCount();
-  }, []);
  
-  // Handle opening the modal
-  const handleAddSessionClick = () => {
-    setShowModal(true);
-  };
-
-  // Handle closing the modal
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  // Handle session added - refreshes the session list
-  const handleSessionAdded = async (newSession) => {
-    // Close the modal
-    setShowModal(false);
-    
-    // Refresh the entire sessions list from the backend
-    await fetchSessions();
-    await fetchSessionCount();
-  };
-
-
-
-  
-  // Nouvelle fonction pour supprimer une session
-  const handleDeleteSession = async (id) => {
-    try {
-      await sessionService.deleteSession(id);
-      // Rafraîchir la liste des sessions et le compte
-      await fetchSessions();
-      await fetchSessionCount();
-    } catch (error) {
-      console.error('Erreur lors de la suppression de la session:', error);
-    }
-  };
-
-  // Nouvelle fonction pour ouvrir le modal de suppression
-  const handleDeleteSessionClick = (session) => {
-    setSelectedSession(session);
-    setShowDeleteModal(true);
-  };
-// Nouvelle fonction pour ouvrir le modal d'édition
-const handleEditSessionClick = (session) => {
-  setSelectedSession(session);
-  setShowEditModal(true);
-};
-  // Fonction de suppression confirmée
-  const handleConfirmDelete = async (id) => {
-    try {
-      await sessionService.deleteSession(id);
-      // Rafraîchir la liste des sessions et le compte
-      await fetchSessions();
-      await fetchSessionCount();
-    } catch (error) {
-      console.error('Erreur lors de la suppression de la session:', error);
-    }
-  };
-
-  // Mise à jour de la fonction de création de tableau
-  const { columns, rows } = sessionsTableData(
-    sessions, 
-    handleDeleteSessionClick, 
-    handleEditSessionClick
-  );
-
-
-
 
   //const { columns, rows } = sessionsTableData(sessions);
 
@@ -164,8 +60,7 @@ const handleEditSessionClick = (session) => {
     <DashboardLayout>
       <Header />
       <SoftBox mt={5} mb={3}>
-        {loading && <SoftTypography>Chargement des sessions...</SoftTypography>}
-        {error && <SoftTypography color="error">Erreur de chargement</SoftTypography>}
+        
       </SoftBox>
       <SoftBox py={3}>
         <SoftBox mb={3}>
@@ -188,7 +83,7 @@ const handleEditSessionClick = (session) => {
                   variant="gradient" 
                   color="info" 
                   sx={{ fontSize: '1rem' }}
-                  onClick={handleAddSessionClick}
+                 
                 >
                   <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                   &nbsp;add new surveillence
@@ -212,30 +107,9 @@ const handleEditSessionClick = (session) => {
         </SoftBox>
       </SoftBox>
 
-      {/* Session Date Modal */}
-      <SessionDateModal 
-        show={showModal} 
-        onClose={handleCloseModal}
-        onSessionAdded={handleSessionAdded}
-      />
+     
 
-<SessionEditModal 
-        show={showEditModal} 
-        onClose={() => setShowEditModal(false)}
-        onSessionUpdated={() => {
-          fetchSessions();
-          fetchSessionCount();
-          setShowEditModal(false);
-        }}
-        initialSession={selectedSession}
-      />
 
-<SessionDeleteModal 
-        show={showDeleteModal} 
-        onClose={() => setShowDeleteModal(false)}
-        onConfirmDelete={handleConfirmDelete}
-        sessionToDelete={selectedSession}
-      />
     </DashboardLayout>
   );
 }
