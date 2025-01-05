@@ -18,7 +18,7 @@ Le frontend de "Gestion Surveillance" est une application React qui permet de vi
 2. [Services utilisés](#services-utilisés)
 
 
-3. [Architecture du projet](#architecture-du-projet)
+3. [Architecture Du projet](#architecture-du-projet)
 ---
 
 
