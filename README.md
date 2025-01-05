@@ -1,22 +1,27 @@
 # Gestion Surveillance
 
-## Description
-
-"Gestion Surveillance" est une application développée pour gérer la surveillance des examens dans une institution éducative. Elle permet de gérer les examens, les modules, les départements, les enseignants, ainsi que les locaux où les examens se dérouleront. Ce projet se compose de deux parties : un Frontend développé en React et un Backend développé avec Spring Boot.
-
----
-
-## Table des matières
-
-- [Frontend - Description et Installation](#frontend---description-et-installation)
-
----
-
 ## Frontend - Description et Installation
 
 ### Description
 
 Le frontend de "Gestion Surveillance" est une application React qui permet de visualiser et de gérer les informations relatives aux examens, modules, départements, enseignants et locaux. Il interagit avec le backend via des API RESTful pour récupérer et afficher les données.
+
+---
+# Table des matières
+
+1. [Gestion Surveillance](#gestion-surveillance)
+
+   - [Prérequis](#prérequis)
+   - [Installation](#installation)
+
+
+2. [Services utilisés](#services-utilisés)
+
+
+3. [Architecture du projet](#architecture-du-projet)
+---
+
+
 
 ### Prérequis
 
