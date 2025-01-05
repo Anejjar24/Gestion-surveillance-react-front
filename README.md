@@ -10,8 +10,6 @@
 
 - [Frontend - Description et Installation](#frontend---description-et-installation)
 
-
-
 ---
 
 ## Frontend - Description et Installation
@@ -32,15 +30,14 @@ Le frontend de "Gestion Surveillance" est une application React qui permet de vi
 
 ```bash
 
-git clone https://github.com/votre-utilisateur/gestion-surveillance-frontend.git
-
+git clone https://github.com/Anejjar24/Gestion-surveillance-react-front.git
 ```
 
 2. Accédez au répertoire du projet :
 
 ```bash
 
-cd gestion-surveillance-frontend
+cd Gestion-surveillance-react-front-main
 
 ```
 
@@ -62,22 +59,41 @@ npm start
 
 L'application sera disponible à l'adresse suivante : http://localhost:3000
 
-### Fonctionnalités
 
- *Authentification** : Connexion et gestion des utilisateurs
-
- *Affichage des examens** : Visualisation des examens programmés, tri par date et type
-
- *Gestion des modules** : Consultation des modules associés aux examens
-
- *Gestion des locaux** : Liste des locaux disponibles et associés aux examens
-
- *Gestion des départements** : Accès aux départements, options et modules associés
 
 ### Services utilisés
 
 * Axios pour effectuer des requêtes HTTP
 
-* React Router pour la gestion des routes
+* React Router Dom pour la gestion des routes
 
-* React-Redux pour la gestion de l'état global de l'application
+### Architucture du projet
+
+```
+src/
+├── api/                # 🔌 APIs et services REST
+├── assets/            # 🎨 Ressources statiques (images, styles, fonts)
+├── components/        # 🧩 Composants réutilisables
+├── context/          # 🌍 Contextes React
+├── examples/         # 📚 Exemples et démonstrations
+├── layouts/          # 📐 Layouts et templates
+├── modals/           # 💫 Fenêtres modales
+├── services/         # ⚙️ Services et logique métier (axios et appels Rest)
+├── App.js           # 📱 Composant principal
+├── index.js         # 🚀 Point d'entrée
+└── routes.js        # 🛣️ Configuration des routes
+
+Configuration Files/
+├── .env              # 🔐 Variables d'environnement
+├── .eslintrc.json    # 📝 Configuration ESLint
+├── .gitignore        # 🙈 Fichiers ignorés par Git
+├── .npmrc            # 📦 Configuration NPM
+├── .prettierrc.json  # 💅 Configuration Prettier
+├── CHANGELOG.md      # 📋 Journal des modifications 
+├── genezio.yaml      # ⚙️ Configuration Genezio
+├── ISSUE_TEMPLATE.md # 🐛 Template pour les issues
+├── jsconfig.json     # 🛠️ Configuration JavaScript
+├── LICENSE.md        # 📄 Licence du projet
+├── package-lock.json # 🔒 Versions exactes des dépendances
+└── package.json      # 📦 Configuration du projet et dépendances
+```
