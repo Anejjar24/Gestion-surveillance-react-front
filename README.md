@@ -72,7 +72,7 @@ L'application sera disponible à l'adresse suivante : http://localhost:3000
 
 * React Router Dom pour la gestion des routes
 
-### Architucture du projet
+### Architucture Du projet
 
 ```
 src/
