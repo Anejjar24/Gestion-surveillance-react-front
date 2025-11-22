@@ -1,11 +1,7 @@
-# WARP.md
-
-This file provides guidance to WARP (warp.dev) when working with code in this repository.
-
 ## Project Overview
 
 **Gestion Surveillance** is a React-based exam surveillance management system. It provides a dashboard for managing examinations, modules, departments, professors, and local exam venues. The frontend communicates with a REST API backend for data operations.
-
+<img width="825" height="397" alt="Image" src="https://github.com/user-attachments/assets/9e16e48a-b170-4138-b655-44ed25ae4805" />
 ## Development Setup & Commands
 
 ### Prerequisites
@@ -180,31 +176,5 @@ Example: Departments feature
 - **Modal Pattern**: Modals are controlled by parent page component state; callbacks trigger parent refetch on submit
 - **Reusable Components**: Use `SoftBox`, `SoftButton`, `SoftTypography` for consistency rather than raw MUI components
 
-## Common Development Tasks
 
-### Adding a New Feature Page
-1. Create `src/layouts/[feature]/index.js` as the main page
-2. Create `src/layouts/[feature]/components/Header.js` for page header
-3. Create `src/layouts/[feature]/data/[feature]TableData.js` for data transformation
-4. Create `src/services/[feature]/` directory with service methods
-5. Create `src/modals/[feature]/` with Add/Edit/Delete modals
-6. Add route in `routes.js` with `protected: true` if authentication required
-
-### Adding a Service Module
-- Create file in `src/services/[domain]/` (e.g., `src/services/exams/examService.js`)
-- Export a service object with methods: `getAll()`, `getById()`, `create()`, `update()`, `delete()`
-- Use `axiosInstance` for all HTTP calls
-- Return data directly; error handling in components
-
-### Adding a New Modal
-- Import in layout component
-- Control visibility with parent state (`showAddModal`, `showEditModal`, `showDeleteModal`)
-- On submit, call service method, then callback parent's refetch function
-- Pass modal state setters and data to modal component as props
-
-## Deployment & Environment
-
-- **Environment Variables**: Configured in `.env` (not tracked in git)
-- **Genezio Config**: `genezio.yaml` present; used for deployment automation if applicable
-- **Build Output**: `npm run build` creates production build in `build/` directory
 
